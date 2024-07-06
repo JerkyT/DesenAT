@@ -1,1 +1,0 @@
-CUDA_VISIBLE_DEVICES=1 python examples/profile.py --cfgs cfgs/s3disfull/pointnet++.yaml num_points=60478

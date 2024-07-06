@@ -32,7 +32,7 @@ def normalize(new_pc):
     return new_pc
 
 @DATASETS.register_module()
-class ModelNet40_C6(Dataset):
+class PointCloudC(Dataset):
     classes = ['airplane',
             'bathtub',
             'bed',
@@ -76,7 +76,7 @@ class ModelNet40_C6(Dataset):
 
     def __init__(self,
                 num_points=1024,
-                data_dir = "./data/modelnet_c",
+                data_dir = "./data/pointcloud_c",
                 split = 'test',
                 corruption = 'uniform',
                 severity = 1,
