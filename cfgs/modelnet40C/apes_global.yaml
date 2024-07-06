@@ -1,0 +1,15 @@
+model:
+  NAME: APESClassifier
+  encoder_args:
+    NAME: APES_global
+    in_channels: 3
+  backbone: 
+    NAME: APESClsBackbone
+    which_ds: global
+  # neck: None
+  head:
+    NAME: APESClsHead
+  cls_args:
+    NAME: ClsHead
+
+batch_size: 8
