@@ -14,8 +14,8 @@ dataset:
 feature_keys: pos
 
 datatransforms:
-  train: ['PointsToTensor', 'PointCloudScaleAndTranslate']
-  c: ['PointsToTensor', 'SpT']
+  train: ['PointsToTensor']
+  c: ['SpT', 'PointsToTensor', 'PointCloudScaleAndTranslate']
   vote: [PointCloudScaleAndTranslate]
   val: [PointsToTensor]
   kwargs:

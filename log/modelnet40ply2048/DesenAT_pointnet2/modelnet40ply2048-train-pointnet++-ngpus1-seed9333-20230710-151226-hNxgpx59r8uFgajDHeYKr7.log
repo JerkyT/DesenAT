@@ -14,7 +14,7 @@ val_fn: validate
 deterministic: False
 sync_bn: False
 criterion_args:
-  NAME: DKD
+  NAME: JGEKD
   label_smoothing: 0.2
 use_mask: False
 grad_norm_clip: 1
@@ -43,7 +43,7 @@ pretrained_path: /apps/users/xxxy_liweigang/tianzhiqiang/PointMetaBase/log/model
 datatransforms:
   train: ['PointsToTensor']
   val: ['PointsToTensor']
-  c: ['TND', 'PointsToTensor', 'PointCloudScaleAndTranslate']
+  c: ['SpT', 'PointsToTensor', 'PointCloudScaleAndTranslate']
   vote: ['PointCloudScaleAndTranslate']
   kwargs:
     shift: [0.2, 0.2, 0.2]
@@ -243,7 +243,7 @@ nsample: None
       )
     )
   )
-  (criterion): DKD(
+  (criterion): JGEKD(
     (ce): SmoothClsLoss()
   )
 )

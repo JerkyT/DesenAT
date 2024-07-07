@@ -10,5 +10,3 @@ CUDA_VISIBLE_DEVICES=2 python ./examples/classification/main.py \
                             --pretrained_path './log/modelnet40ply2048/DesenAT_pointnet2/checkpoint/best.pth';
 done
 done
-
-# CUDA_VISIBLE_DEVICES=3 python ./examples/classification/main.py --cfg ./cfgs/modelnet40C6/apes_global.yaml
