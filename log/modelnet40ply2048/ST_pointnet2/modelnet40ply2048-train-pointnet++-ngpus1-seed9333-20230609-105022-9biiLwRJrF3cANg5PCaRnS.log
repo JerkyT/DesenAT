@@ -1,0 +1,1609 @@
+[06/09 10:50:22] ModelNet40Ply2048 INFO: dist_url: tcp://localhost:8888
+dist_backend: nccl
+multiprocessing_distributed: False
+ngpus_per_node: 1
+world_size: 1
+launcher: mp
+local_rank: 0
+use_gpu: True
+seed: 9333
+epoch: 0
+epochs: 250
+ignore_index: None
+val_fn: validate
+deterministic: False
+sync_bn: False
+criterion_args:
+  NAME: SmoothCrossEntropy
+  label_smoothing: 0.2
+use_mask: False
+grad_norm_clip: 1
+layer_decay: 0
+step_per_update: 1
+start_epoch: 1
+sched_on_epoch: True
+wandb:
+  use_wandb: False
+  project: PointMetaBase-ModelNet40Ply2048
+  tags: ['modelnet40ply2048', 'train', 'pointnet++', 'ngpus1', 'seed9333']
+  name: modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS
+use_amp: False
+use_voting: False
+val_freq: 1
+resume: False
+test: False
+finetune: False
+mode: train
+logname: None
+load_path: None
+print_freq: 10
+save_freq: -1
+root_dir: log/modelnet40ply2048
+pretrained_path: None
+datatransforms:
+  train: ['PointsToTensor']
+  val: ['PointsToTensor']
+  vote: ['PointCloudScaleAndTranslate']
+  kwargs:
+    shift: [0.2, 0.2, 0.2]
+feature_keys: pos
+num_points: 1024
+dataset:
+  common:
+    NAME: ModelNet40Ply2048
+    data_dir: ./data/ModelNet40Ply2048
+  train:
+    split: train
+    num_points: 1024
+  val:
+    split: test
+    num_points: 1024
+batch_size: 32
+dataloader:
+  num_workers: 6
+  gen_shaply: False
+  n_eval: 1000
+  shapley: False
+  mask_alpha: 0.5
+num_classes: 40
+sched: cosine
+warmup_epochs: 0
+min_lr: None
+lr: 0.001
+optimizer:
+  NAME: adamw
+  weight_decay: 0.05
+log_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS
+val_batch_size: 64
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNet2Encoder
+    in_channels: 3
+    width: None
+    layers: 3
+    use_res: False
+    strides: [2, 4, 1]
+    mlps: [[[64, 64, 128]], [[128, 128, 256]], [[256, 512, 1024]]]
+    radius: [0.2, 0.4, None]
+    num_samples: [32, 64, None]
+    sampler: fps
+    aggr_args:
+      NAME: convpool
+      feature_type: dp_fj
+      anisotropic: False
+      reduction: max
+    group_args:
+      NAME: ballquery
+      use_xyz: True
+      normalize_dp: False
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 40
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d
+rank: 0
+distributed: False
+mp: False
+task_name: modelnet40ply2048
+exp_name: pointnet++
+run_name: modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS
+run_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS
+exp_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS
+ckpt_dir: log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint
+log_path: log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS.log
+cfg_path: log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/cfg.yaml
+[06/09 10:50:22] ModelNet40Ply2048 INFO: radius is modified to [[0.2], [0.4], [None]]
+[06/09 10:50:22] ModelNet40Ply2048 INFO: num_samples is modified to [[32], [64], [None]]
+[06/09 10:50:22] ModelNet40Ply2048 INFO: NAME: ballquery
+use_xyz: True
+normalize_dp: False
+radius: 0.2
+nsample: 32
+[06/09 10:50:22] ModelNet40Ply2048 INFO: NAME: ballquery
+use_xyz: True
+normalize_dp: False
+radius: 0.4
+nsample: 64
+[06/09 10:50:22] ModelNet40Ply2048 INFO: NAME: ballquery
+use_xyz: True
+normalize_dp: False
+radius: None
+nsample: None
+[06/09 10:50:24] ModelNet40Ply2048 INFO: BaseCls(
+  (encoder): PointNet2Encoder(
+    (SA_modules): ModuleList(
+      (0): PointNetSAModuleMSG(
+        (local_aggregations): ModuleList(
+          (0): LocalAggregation(
+            (SA_CONFIG_operator): ConvPool(
+              (act): ReLU(inplace=True)
+              (convs): Sequential(
+                (0): Sequential(
+                  (0): Conv2d(6, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+                (1): Sequential(
+                  (0): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+                (2): Sequential(
+                  (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+              )
+              (grouper): QueryAndGroup()
+            )
+          )
+        )
+      )
+      (1): PointNetSAModuleMSG(
+        (local_aggregations): ModuleList(
+          (0): LocalAggregation(
+            (SA_CONFIG_operator): ConvPool(
+              (act): ReLU(inplace=True)
+              (convs): Sequential(
+                (0): Sequential(
+                  (0): Conv2d(131, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+                (1): Sequential(
+                  (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+                (2): Sequential(
+                  (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+              )
+              (grouper): QueryAndGroup()
+            )
+          )
+        )
+      )
+      (2): PointNetSAModuleMSG(
+        (local_aggregations): ModuleList(
+          (0): LocalAggregation(
+            (SA_CONFIG_operator): ConvPool(
+              (act): ReLU(inplace=True)
+              (convs): Sequential(
+                (0): Sequential(
+                  (0): Conv2d(259, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+                (1): Sequential(
+                  (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+                (2): Sequential(
+                  (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  (2): ReLU(inplace=True)
+                )
+              )
+              (grouper): GroupAll()
+            )
+          )
+        )
+      )
+    )
+  )
+  (prediction): ClsHead(
+    (head): Sequential(
+      (0): Sequential(
+        (0): Linear(in_features=1024, out_features=512, bias=False)
+        (1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Dropout(p=0.5, inplace=False)
+      (2): Sequential(
+        (0): Linear(in_features=512, out_features=256, bias=False)
+        (1): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Dropout(p=0.5, inplace=False)
+      (4): Sequential(
+        (0): Linear(in_features=256, out_features=40, bias=True)
+      )
+    )
+  )
+  (criterion): SmoothCrossEntropy()
+)
+[06/09 10:50:24] ModelNet40Ply2048 INFO: Number of params: 1.4726 M
+[06/09 10:50:24] ModelNet40Ply2048 INFO: Param groups = {
+  "decay": {
+    "weight_decay": 0.05,
+    "params": [
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.0.0.weight",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.1.0.weight",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.2.0.weight",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.0.0.weight",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.1.0.weight",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.2.0.weight",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.0.0.weight",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.1.0.weight",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.2.0.weight",
+      "prediction.head.0.0.weight",
+      "prediction.head.2.0.weight",
+      "prediction.head.4.0.weight"
+    ],
+    "lr_scale": 1.0
+  },
+  "no_decay": {
+    "weight_decay": 0.0,
+    "params": [
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.0.1.weight",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.0.1.bias",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.1.1.weight",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.1.1.bias",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.2.1.weight",
+      "encoder.SA_modules.0.local_aggregations.0.SA_CONFIG_operator.convs.2.1.bias",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.0.1.weight",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.0.1.bias",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.1.1.weight",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.1.1.bias",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.2.1.weight",
+      "encoder.SA_modules.1.local_aggregations.0.SA_CONFIG_operator.convs.2.1.bias",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.0.1.weight",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.0.1.bias",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.1.1.weight",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.1.1.bias",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.2.1.weight",
+      "encoder.SA_modules.2.local_aggregations.0.SA_CONFIG_operator.convs.2.1.bias",
+      "prediction.head.0.1.weight",
+      "prediction.head.0.1.bias",
+      "prediction.head.2.1.weight",
+      "prediction.head.2.1.bias",
+      "prediction.head.4.0.bias"
+    ],
+    "lr_scale": 1.0
+  }
+}
+[06/09 10:50:24] ModelNet40Ply2048 INFO: ==> sucessfully loaded test data
+[06/09 10:50:24] ModelNet40Ply2048 INFO: length of validation dataset: 2468
+[06/09 10:50:25] ModelNet40Ply2048 INFO: ==> sucessfully loaded test data
+[06/09 10:50:25] ModelNet40Ply2048 INFO: number of classes of the dataset: 40, number of points sampled from dataset: 1024, number of points as model input: 1024
+[06/09 10:50:25] ModelNet40Ply2048 INFO: Training from scratch
+[06/09 10:50:29] ModelNet40Ply2048 INFO: ==> sucessfully loaded train data
+[06/09 10:50:29] ModelNet40Ply2048 INFO: length of training dataset: 9840
+[06/09 10:51:00] ModelNet40Ply2048 INFO: Find a better ckpt @E1
+[06/09 10:51:00] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 72.00%
+bed       : 95.00%
+bench     : 55.00%
+bookshelf : 96.00%
+bottle    : 89.00%
+bowl      : 90.00%
+car       : 84.00%
+chair     : 95.00%
+cone      : 85.00%
+cup       : 5.00%
+curtain   : 50.00%
+desk      : 67.44%
+door      : 0.00%
+dresser   : 55.81%
+flower_pot: 0.00%
+glass_box : 51.00%
+guitar    : 96.00%
+keyboard  : 100.00%
+lamp      : 50.00%
+laptop    : 100.00%
+mantel    : 88.00%
+monitor   : 93.00%
+night_stand: 27.91%
+person    : 40.00%
+piano     : 54.00%
+plant     : 76.00%
+radio     : 0.00%
+range_hood: 18.00%
+sink      : 5.00%
+sofa      : 97.00%
+stairs    : 20.00%
+stool     : 25.00%
+table     : 80.00%
+tent      : 80.00%
+toilet    : 89.00%
+tv_stand  : 70.00%
+vase      : 77.00%
+wardrobe  : 10.00%
+xbox      : 40.00%
+E@1	OA: 71.52	mAcc: 60.65
+
+[06/09 10:51:00] ModelNet40Ply2048 INFO: Epoch 1 LR 0.001000 train_oa 60.08, val_oa 71.52, best val oa 71.52
+[06/09 10:51:00] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:51:21] ModelNet40Ply2048 INFO: Find a better ckpt @E2
+[06/09 10:51:21] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 74.00%
+bed       : 96.00%
+bench     : 65.00%
+bookshelf : 96.00%
+bottle    : 67.00%
+bowl      : 80.00%
+car       : 96.00%
+chair     : 95.00%
+cone      : 75.00%
+cup       : 25.00%
+curtain   : 10.00%
+desk      : 75.58%
+door      : 95.00%
+dresser   : 77.91%
+flower_pot: 0.00%
+glass_box : 73.00%
+guitar    : 95.00%
+keyboard  : 100.00%
+lamp      : 55.00%
+laptop    : 95.00%
+mantel    : 90.00%
+monitor   : 98.00%
+night_stand: 46.51%
+person    : 55.00%
+piano     : 66.00%
+plant     : 82.00%
+radio     : 0.00%
+range_hood: 73.00%
+sink      : 55.00%
+sofa      : 99.00%
+stairs    : 45.00%
+stool     : 50.00%
+table     : 73.00%
+tent      : 90.00%
+toilet    : 100.00%
+tv_stand  : 71.00%
+vase      : 86.00%
+wardrobe  : 25.00%
+xbox      : 20.00%
+E@2	OA: 79.13	mAcc: 69.25
+
+[06/09 10:51:21] ModelNet40Ply2048 INFO: Epoch 2 LR 0.001000 train_oa 75.52, val_oa 79.13, best val oa 79.13
+[06/09 10:51:21] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:51:40] ModelNet40Ply2048 INFO: Find a better ckpt @E3
+[06/09 10:51:40] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 76.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 93.00%
+bottle    : 96.00%
+bowl      : 95.00%
+car       : 88.00%
+chair     : 100.00%
+cone      : 85.00%
+cup       : 0.00%
+curtain   : 75.00%
+desk      : 62.79%
+door      : 75.00%
+dresser   : 88.37%
+flower_pot: 0.00%
+glass_box : 81.00%
+guitar    : 98.00%
+keyboard  : 100.00%
+lamp      : 70.00%
+laptop    : 100.00%
+mantel    : 89.00%
+monitor   : 92.00%
+night_stand: 58.14%
+person    : 75.00%
+piano     : 84.00%
+plant     : 79.00%
+radio     : 0.00%
+range_hood: 92.00%
+sink      : 55.00%
+sofa      : 95.00%
+stairs    : 65.00%
+stool     : 50.00%
+table     : 89.00%
+tent      : 95.00%
+toilet    : 94.00%
+tv_stand  : 85.00%
+vase      : 75.00%
+wardrobe  : 50.00%
+xbox      : 50.00%
+E@3	OA: 83.87	mAcc: 75.73
+
+[06/09 10:51:40] ModelNet40Ply2048 INFO: Epoch 3 LR 0.001000 train_oa 80.09, val_oa 83.87, best val oa 83.87
+[06/09 10:51:40] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:51:59] ModelNet40Ply2048 INFO: Epoch 4 LR 0.001000 train_oa 82.79, val_oa 82.86, best val oa 83.87
+[06/09 10:52:18] ModelNet40Ply2048 INFO: Find a better ckpt @E5
+[06/09 10:52:18] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 72.00%
+bed       : 96.00%
+bench     : 70.00%
+bookshelf : 91.00%
+bottle    : 87.00%
+bowl      : 80.00%
+car       : 93.00%
+chair     : 97.00%
+cone      : 80.00%
+cup       : 25.00%
+curtain   : 15.00%
+desk      : 81.40%
+door      : 100.00%
+dresser   : 73.26%
+flower_pot: 10.00%
+glass_box : 75.00%
+guitar    : 95.00%
+keyboard  : 100.00%
+lamp      : 70.00%
+laptop    : 100.00%
+mantel    : 89.00%
+monitor   : 97.00%
+night_stand: 83.72%
+person    : 90.00%
+piano     : 84.00%
+plant     : 71.00%
+radio     : 40.00%
+range_hood: 78.00%
+sink      : 70.00%
+sofa      : 98.00%
+stairs    : 65.00%
+stool     : 80.00%
+table     : 82.00%
+tent      : 95.00%
+toilet    : 100.00%
+tv_stand  : 77.00%
+vase      : 95.00%
+wardrobe  : 65.00%
+xbox      : 50.00%
+E@5	OA: 84.56	mAcc: 78.01
+
+[06/09 10:52:18] ModelNet40Ply2048 INFO: Epoch 5 LR 0.000999 train_oa 83.83, val_oa 84.56, best val oa 84.56
+[06/09 10:52:18] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:52:37] ModelNet40Ply2048 INFO: Epoch 6 LR 0.000999 train_oa 85.38, val_oa 83.02, best val oa 84.56
+[06/09 10:52:56] ModelNet40Ply2048 INFO: Find a better ckpt @E7
+[06/09 10:52:56] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 94.00%
+bed       : 96.00%
+bench     : 70.00%
+bookshelf : 96.00%
+bottle    : 96.00%
+bowl      : 95.00%
+car       : 95.00%
+chair     : 98.00%
+cone      : 75.00%
+cup       : 5.00%
+curtain   : 85.00%
+desk      : 77.91%
+door      : 20.00%
+dresser   : 83.72%
+flower_pot: 0.00%
+glass_box : 73.00%
+guitar    : 97.00%
+keyboard  : 100.00%
+lamp      : 75.00%
+laptop    : 100.00%
+mantel    : 90.00%
+monitor   : 97.00%
+night_stand: 68.60%
+person    : 55.00%
+piano     : 73.00%
+plant     : 87.00%
+radio     : 30.00%
+range_hood: 74.00%
+sink      : 70.00%
+sofa      : 99.00%
+stairs    : 85.00%
+stool     : 75.00%
+table     : 90.00%
+tent      : 85.00%
+toilet    : 100.00%
+tv_stand  : 88.00%
+vase      : 86.00%
+wardrobe  : 65.00%
+xbox      : 65.00%
+E@7	OA: 85.53	mAcc: 77.86
+
+[06/09 10:52:56] ModelNet40Ply2048 INFO: Epoch 7 LR 0.000999 train_oa 86.61, val_oa 85.53, best val oa 85.53
+[06/09 10:52:56] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:53:15] ModelNet40Ply2048 INFO: Epoch 8 LR 0.000998 train_oa 87.13, val_oa 84.85, best val oa 85.53
+[06/09 10:53:34] ModelNet40Ply2048 INFO: Find a better ckpt @E9
+[06/09 10:53:34] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 99.00%
+bathtub   : 90.00%
+bed       : 98.00%
+bench     : 75.00%
+bookshelf : 92.00%
+bottle    : 78.00%
+bowl      : 85.00%
+car       : 95.00%
+chair     : 96.00%
+cone      : 75.00%
+cup       : 40.00%
+curtain   : 50.00%
+desk      : 83.72%
+door      : 100.00%
+dresser   : 65.12%
+flower_pot: 0.00%
+glass_box : 83.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 90.00%
+laptop    : 100.00%
+mantel    : 92.00%
+monitor   : 96.00%
+night_stand: 79.07%
+person    : 90.00%
+piano     : 86.00%
+plant     : 84.00%
+radio     : 50.00%
+range_hood: 84.00%
+sink      : 75.00%
+sofa      : 100.00%
+stairs    : 85.00%
+stool     : 85.00%
+table     : 84.00%
+tent      : 90.00%
+toilet    : 98.00%
+tv_stand  : 86.00%
+vase      : 90.00%
+wardrobe  : 55.00%
+xbox      : 50.00%
+E@9	OA: 86.75	mAcc: 81.35
+
+[06/09 10:53:34] ModelNet40Ply2048 INFO: Epoch 9 LR 0.000997 train_oa 87.49, val_oa 86.75, best val oa 86.75
+[06/09 10:53:34] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:53:53] ModelNet40Ply2048 INFO: Epoch 10 LR 0.000997 train_oa 88.60, val_oa 86.55, best val oa 86.75
+[06/09 10:54:11] ModelNet40Ply2048 INFO: Find a better ckpt @E11
+[06/09 10:54:11] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 86.00%
+bed       : 99.00%
+bench     : 80.00%
+bookshelf : 98.00%
+bottle    : 95.00%
+bowl      : 75.00%
+car       : 97.00%
+chair     : 99.00%
+cone      : 85.00%
+cup       : 35.00%
+curtain   : 65.00%
+desk      : 79.07%
+door      : 80.00%
+dresser   : 73.26%
+flower_pot: 0.00%
+glass_box : 96.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 80.00%
+laptop    : 100.00%
+mantel    : 90.00%
+monitor   : 98.00%
+night_stand: 50.00%
+person    : 75.00%
+piano     : 90.00%
+plant     : 90.00%
+radio     : 45.00%
+range_hood: 96.00%
+sink      : 60.00%
+sofa      : 99.00%
+stairs    : 55.00%
+stool     : 70.00%
+table     : 95.00%
+tent      : 90.00%
+toilet    : 100.00%
+tv_stand  : 59.00%
+vase      : 93.00%
+wardrobe  : 65.00%
+xbox      : 65.00%
+E@11	OA: 87.36	mAcc: 80.18
+
+[06/09 10:54:11] ModelNet40Ply2048 INFO: Epoch 11 LR 0.000996 train_oa 89.20, val_oa 87.36, best val oa 87.36
+[06/09 10:54:12] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:54:30] ModelNet40Ply2048 INFO: Find a better ckpt @E12
+[06/09 10:54:30] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 99.00%
+bathtub   : 78.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 92.00%
+bottle    : 96.00%
+bowl      : 80.00%
+car       : 92.00%
+chair     : 97.00%
+cone      : 85.00%
+cup       : 50.00%
+curtain   : 85.00%
+desk      : 79.07%
+door      : 80.00%
+dresser   : 70.93%
+flower_pot: 0.00%
+glass_box : 94.00%
+guitar    : 98.00%
+keyboard  : 100.00%
+lamp      : 80.00%
+laptop    : 100.00%
+mantel    : 94.00%
+monitor   : 98.00%
+night_stand: 80.23%
+person    : 80.00%
+piano     : 85.00%
+plant     : 91.00%
+radio     : 30.00%
+range_hood: 93.00%
+sink      : 85.00%
+sofa      : 97.00%
+stairs    : 65.00%
+stool     : 80.00%
+table     : 91.00%
+tent      : 90.00%
+toilet    : 99.00%
+tv_stand  : 81.00%
+vase      : 88.00%
+wardrobe  : 70.00%
+xbox      : 55.00%
+E@12	OA: 88.29	mAcc: 82.06
+
+[06/09 10:54:30] ModelNet40Ply2048 INFO: Epoch 12 LR 0.000995 train_oa 89.60, val_oa 88.29, best val oa 88.29
+[06/09 10:54:31] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:54:49] ModelNet40Ply2048 INFO: Find a better ckpt @E13
+[06/09 10:54:49] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 65.00%
+bookshelf : 94.00%
+bottle    : 98.00%
+bowl      : 75.00%
+car       : 98.00%
+chair     : 95.00%
+cone      : 85.00%
+cup       : 80.00%
+curtain   : 55.00%
+desk      : 90.70%
+door      : 90.00%
+dresser   : 81.40%
+flower_pot: 0.00%
+glass_box : 92.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 95.00%
+laptop    : 100.00%
+mantel    : 93.00%
+monitor   : 97.00%
+night_stand: 73.26%
+person    : 90.00%
+piano     : 91.00%
+plant     : 92.00%
+radio     : 60.00%
+range_hood: 96.00%
+sink      : 65.00%
+sofa      : 99.00%
+stairs    : 75.00%
+stool     : 70.00%
+table     : 86.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 87.00%
+vase      : 70.00%
+wardrobe  : 65.00%
+xbox      : 70.00%
+E@13	OA: 89.55	mAcc: 83.96
+
+[06/09 10:54:49] ModelNet40Ply2048 INFO: Epoch 13 LR 0.000994 train_oa 90.13, val_oa 89.55, best val oa 89.55
+[06/09 10:54:50] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 10:55:14] ModelNet40Ply2048 INFO: Epoch 14 LR 0.000993 train_oa 90.56, val_oa 89.14, best val oa 89.55
+[06/09 10:55:50] ModelNet40Ply2048 INFO: Epoch 15 LR 0.000992 train_oa 90.87, val_oa 86.87, best val oa 89.55
+[06/09 10:56:25] ModelNet40Ply2048 INFO: Epoch 16 LR 0.000991 train_oa 91.14, val_oa 87.84, best val oa 89.55
+[06/09 10:57:01] ModelNet40Ply2048 INFO: Epoch 17 LR 0.000990 train_oa 91.59, val_oa 88.41, best val oa 89.55
+[06/09 10:57:36] ModelNet40Ply2048 INFO: Epoch 18 LR 0.000989 train_oa 91.95, val_oa 88.53, best val oa 89.55
+[06/09 10:58:11] ModelNet40Ply2048 INFO: Epoch 19 LR 0.000987 train_oa 92.40, val_oa 86.55, best val oa 89.55
+[06/09 10:58:48] ModelNet40Ply2048 INFO: Epoch 20 LR 0.000986 train_oa 92.37, val_oa 87.84, best val oa 89.55
+[06/09 10:59:24] ModelNet40Ply2048 INFO: Epoch 21 LR 0.000984 train_oa 92.66, val_oa 88.25, best val oa 89.55
+[06/09 11:00:01] ModelNet40Ply2048 INFO: Find a better ckpt @E22
+[06/09 11:00:01] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 96.00%
+bottle    : 97.00%
+bowl      : 90.00%
+car       : 96.00%
+chair     : 97.00%
+cone      : 85.00%
+cup       : 55.00%
+curtain   : 70.00%
+desk      : 87.21%
+door      : 100.00%
+dresser   : 90.70%
+flower_pot: 45.00%
+glass_box : 97.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 95.00%
+laptop    : 100.00%
+mantel    : 94.00%
+monitor   : 99.00%
+night_stand: 69.77%
+person    : 90.00%
+piano     : 88.00%
+plant     : 66.00%
+radio     : 60.00%
+range_hood: 85.00%
+sink      : 80.00%
+sofa      : 97.00%
+stairs    : 75.00%
+stool     : 65.00%
+table     : 93.00%
+tent      : 95.00%
+toilet    : 100.00%
+tv_stand  : 88.00%
+vase      : 85.00%
+wardrobe  : 50.00%
+xbox      : 65.00%
+E@22	OA: 89.75	mAcc: 85.29
+
+[06/09 11:00:01] ModelNet40Ply2048 INFO: Epoch 22 LR 0.000983 train_oa 93.32, val_oa 89.75, best val oa 89.75
+[06/09 11:00:01] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:00:37] ModelNet40Ply2048 INFO: Epoch 23 LR 0.000981 train_oa 93.50, val_oa 89.26, best val oa 89.75
+[06/09 11:01:13] ModelNet40Ply2048 INFO: Epoch 24 LR 0.000979 train_oa 93.31, val_oa 88.86, best val oa 89.75
+[06/09 11:01:50] ModelNet40Ply2048 INFO: Epoch 25 LR 0.000977 train_oa 93.45, val_oa 89.63, best val oa 89.75
+[06/09 11:02:26] ModelNet40Ply2048 INFO: Epoch 26 LR 0.000976 train_oa 93.45, val_oa 89.06, best val oa 89.75
+[06/09 11:03:04] ModelNet40Ply2048 INFO: Epoch 27 LR 0.000974 train_oa 93.94, val_oa 89.34, best val oa 89.75
+[06/09 11:03:40] ModelNet40Ply2048 INFO: Epoch 28 LR 0.000972 train_oa 94.24, val_oa 89.34, best val oa 89.75
+[06/09 11:04:16] ModelNet40Ply2048 INFO: Find a better ckpt @E29
+[06/09 11:04:16] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 88.00%
+bed       : 99.00%
+bench     : 80.00%
+bookshelf : 95.00%
+bottle    : 98.00%
+bowl      : 85.00%
+car       : 98.00%
+chair     : 96.00%
+cone      : 90.00%
+cup       : 75.00%
+curtain   : 90.00%
+desk      : 83.72%
+door      : 75.00%
+dresser   : 68.60%
+flower_pot: 0.00%
+glass_box : 93.00%
+guitar    : 99.00%
+keyboard  : 100.00%
+lamp      : 90.00%
+laptop    : 100.00%
+mantel    : 97.00%
+monitor   : 97.00%
+night_stand: 79.07%
+person    : 90.00%
+piano     : 90.00%
+plant     : 81.00%
+radio     : 65.00%
+range_hood: 92.00%
+sink      : 75.00%
+sofa      : 100.00%
+stairs    : 85.00%
+stool     : 85.00%
+table     : 90.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 83.00%
+vase      : 82.00%
+wardrobe  : 65.00%
+xbox      : 75.00%
+E@29	OA: 89.79	mAcc: 85.71
+
+[06/09 11:04:16] ModelNet40Ply2048 INFO: Epoch 29 LR 0.000969 train_oa 94.44, val_oa 89.79, best val oa 89.79
+[06/09 11:04:16] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:04:53] ModelNet40Ply2048 INFO: Epoch 30 LR 0.000967 train_oa 94.36, val_oa 89.22, best val oa 89.79
+[06/09 11:05:29] ModelNet40Ply2048 INFO: Epoch 31 LR 0.000965 train_oa 94.65, val_oa 88.98, best val oa 89.79
+[06/09 11:06:06] ModelNet40Ply2048 INFO: Epoch 32 LR 0.000963 train_oa 94.74, val_oa 89.38, best val oa 89.79
+[06/09 11:06:42] ModelNet40Ply2048 INFO: Epoch 33 LR 0.000960 train_oa 95.16, val_oa 88.65, best val oa 89.79
+[06/09 11:07:19] ModelNet40Ply2048 INFO: Epoch 34 LR 0.000958 train_oa 95.04, val_oa 89.30, best val oa 89.79
+[06/09 11:07:57] ModelNet40Ply2048 INFO: Epoch 35 LR 0.000955 train_oa 95.41, val_oa 89.75, best val oa 89.79
+[06/09 11:08:33] ModelNet40Ply2048 INFO: Epoch 36 LR 0.000952 train_oa 95.60, val_oa 89.14, best val oa 89.79
+[06/09 11:09:09] ModelNet40Ply2048 INFO: Epoch 37 LR 0.000950 train_oa 95.70, val_oa 89.06, best val oa 89.79
+[06/09 11:09:44] ModelNet40Ply2048 INFO: Epoch 38 LR 0.000947 train_oa 95.55, val_oa 89.71, best val oa 89.79
+[06/09 11:10:20] ModelNet40Ply2048 INFO: Epoch 39 LR 0.000944 train_oa 95.82, val_oa 87.52, best val oa 89.79
+[06/09 11:10:56] ModelNet40Ply2048 INFO: Epoch 40 LR 0.000941 train_oa 95.56, val_oa 89.30, best val oa 89.79
+[06/09 11:11:32] ModelNet40Ply2048 INFO: Find a better ckpt @E41
+[06/09 11:11:32] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 88.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 93.00%
+bottle    : 95.00%
+bowl      : 85.00%
+car       : 97.00%
+chair     : 97.00%
+cone      : 90.00%
+cup       : 80.00%
+curtain   : 85.00%
+desk      : 87.21%
+door      : 80.00%
+dresser   : 87.21%
+flower_pot: 0.00%
+glass_box : 93.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 90.00%
+laptop    : 100.00%
+mantel    : 94.00%
+monitor   : 99.00%
+night_stand: 73.26%
+person    : 90.00%
+piano     : 90.00%
+plant     : 82.00%
+radio     : 80.00%
+range_hood: 89.00%
+sink      : 95.00%
+sofa      : 100.00%
+stairs    : 80.00%
+stool     : 60.00%
+table     : 85.00%
+tent      : 95.00%
+toilet    : 97.00%
+tv_stand  : 88.00%
+vase      : 81.00%
+wardrobe  : 65.00%
+xbox      : 70.00%
+E@41	OA: 89.95	mAcc: 85.87
+
+[06/09 11:11:32] ModelNet40Ply2048 INFO: Epoch 41 LR 0.000938 train_oa 95.96, val_oa 89.95, best val oa 89.95
+[06/09 11:11:32] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:12:09] ModelNet40Ply2048 INFO: Epoch 42 LR 0.000935 train_oa 96.04, val_oa 89.63, best val oa 89.95
+[06/09 11:12:45] ModelNet40Ply2048 INFO: Epoch 43 LR 0.000932 train_oa 96.25, val_oa 88.29, best val oa 89.95
+[06/09 11:13:23] ModelNet40Ply2048 INFO: Epoch 44 LR 0.000929 train_oa 96.27, val_oa 89.10, best val oa 89.95
+[06/09 11:13:59] ModelNet40Ply2048 INFO: Epoch 45 LR 0.000926 train_oa 96.48, val_oa 89.02, best val oa 89.95
+[06/09 11:14:35] ModelNet40Ply2048 INFO: Epoch 46 LR 0.000922 train_oa 96.75, val_oa 89.63, best val oa 89.95
+[06/09 11:15:12] ModelNet40Ply2048 INFO: Epoch 47 LR 0.000919 train_oa 96.80, val_oa 89.38, best val oa 89.95
+[06/09 11:15:48] ModelNet40Ply2048 INFO: Epoch 48 LR 0.000915 train_oa 96.70, val_oa 89.34, best val oa 89.95
+[06/09 11:16:25] ModelNet40Ply2048 INFO: Epoch 49 LR 0.000912 train_oa 96.38, val_oa 87.97, best val oa 89.95
+[06/09 11:17:01] ModelNet40Ply2048 INFO: Find a better ckpt @E50
+[06/09 11:17:01] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 94.00%
+bed       : 99.00%
+bench     : 70.00%
+bookshelf : 94.00%
+bottle    : 97.00%
+bowl      : 100.00%
+car       : 96.00%
+chair     : 96.00%
+cone      : 90.00%
+cup       : 65.00%
+curtain   : 85.00%
+desk      : 84.88%
+door      : 90.00%
+dresser   : 94.19%
+flower_pot: 0.00%
+glass_box : 95.00%
+guitar    : 100.00%
+keyboard  : 95.00%
+lamp      : 80.00%
+laptop    : 100.00%
+mantel    : 95.00%
+monitor   : 99.00%
+night_stand: 54.65%
+person    : 95.00%
+piano     : 92.00%
+plant     : 92.00%
+radio     : 60.00%
+range_hood: 93.00%
+sink      : 80.00%
+sofa      : 99.00%
+stairs    : 85.00%
+stool     : 90.00%
+table     : 85.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 83.00%
+vase      : 82.00%
+wardrobe  : 75.00%
+xbox      : 65.00%
+E@50	OA: 90.28	mAcc: 86.09
+
+[06/09 11:17:01] ModelNet40Ply2048 INFO: Epoch 50 LR 0.000908 train_oa 97.15, val_oa 90.28, best val oa 90.28
+[06/09 11:17:01] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:17:37] ModelNet40Ply2048 INFO: Epoch 51 LR 0.000905 train_oa 97.00, val_oa 90.24, best val oa 90.28
+[06/09 11:18:14] ModelNet40Ply2048 INFO: Find a better ckpt @E52
+[06/09 11:18:14] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 88.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 94.00%
+bottle    : 98.00%
+bowl      : 85.00%
+car       : 97.00%
+chair     : 97.00%
+cone      : 95.00%
+cup       : 70.00%
+curtain   : 100.00%
+desk      : 88.37%
+door      : 90.00%
+dresser   : 87.21%
+flower_pot: 35.00%
+glass_box : 92.00%
+guitar    : 99.00%
+keyboard  : 95.00%
+lamp      : 85.00%
+laptop    : 100.00%
+mantel    : 94.00%
+monitor   : 98.00%
+night_stand: 72.09%
+person    : 95.00%
+piano     : 87.00%
+plant     : 78.00%
+radio     : 75.00%
+range_hood: 93.00%
+sink      : 75.00%
+sofa      : 99.00%
+stairs    : 80.00%
+stool     : 80.00%
+table     : 79.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 89.00%
+vase      : 83.00%
+wardrobe  : 75.00%
+xbox      : 80.00%
+E@52	OA: 90.32	mAcc: 87.39
+
+[06/09 11:18:14] ModelNet40Ply2048 INFO: Epoch 52 LR 0.000901 train_oa 97.28, val_oa 90.32, best val oa 90.32
+[06/09 11:18:14] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:18:50] ModelNet40Ply2048 INFO: Epoch 53 LR 0.000897 train_oa 97.13, val_oa 89.99, best val oa 90.32
+[06/09 11:19:26] ModelNet40Ply2048 INFO: Epoch 54 LR 0.000893 train_oa 97.04, val_oa 89.87, best val oa 90.32
+[06/09 11:20:01] ModelNet40Ply2048 INFO: Epoch 55 LR 0.000889 train_oa 96.92, val_oa 89.79, best val oa 90.32
+[06/09 11:20:37] ModelNet40Ply2048 INFO: Epoch 56 LR 0.000885 train_oa 97.18, val_oa 90.15, best val oa 90.32
+[06/09 11:21:14] ModelNet40Ply2048 INFO: Epoch 57 LR 0.000881 train_oa 97.40, val_oa 88.94, best val oa 90.32
+[06/09 11:21:50] ModelNet40Ply2048 INFO: Epoch 58 LR 0.000877 train_oa 97.49, val_oa 89.10, best val oa 90.32
+[06/09 11:22:27] ModelNet40Ply2048 INFO: Epoch 59 LR 0.000873 train_oa 97.50, val_oa 89.83, best val oa 90.32
+[06/09 11:23:03] ModelNet40Ply2048 INFO: Epoch 60 LR 0.000869 train_oa 97.56, val_oa 89.42, best val oa 90.32
+[06/09 11:23:40] ModelNet40Ply2048 INFO: Epoch 61 LR 0.000865 train_oa 97.58, val_oa 90.11, best val oa 90.32
+[06/09 11:24:17] ModelNet40Ply2048 INFO: Epoch 62 LR 0.000860 train_oa 97.31, val_oa 89.30, best val oa 90.32
+[06/09 11:24:53] ModelNet40Ply2048 INFO: Epoch 63 LR 0.000856 train_oa 97.60, val_oa 89.55, best val oa 90.32
+[06/09 11:25:30] ModelNet40Ply2048 INFO: Find a better ckpt @E64
+[06/09 11:25:30] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 86.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 95.00%
+bottle    : 98.00%
+bowl      : 85.00%
+car       : 97.00%
+chair     : 97.00%
+cone      : 90.00%
+cup       : 50.00%
+curtain   : 100.00%
+desk      : 80.23%
+door      : 90.00%
+dresser   : 90.70%
+flower_pot: 10.00%
+glass_box : 96.00%
+guitar    : 99.00%
+keyboard  : 100.00%
+lamp      : 90.00%
+laptop    : 100.00%
+mantel    : 93.00%
+monitor   : 96.00%
+night_stand: 68.60%
+person    : 85.00%
+piano     : 90.00%
+plant     : 90.00%
+radio     : 60.00%
+range_hood: 95.00%
+sink      : 75.00%
+sofa      : 99.00%
+stairs    : 90.00%
+stool     : 75.00%
+table     : 86.00%
+tent      : 95.00%
+toilet    : 98.00%
+tv_stand  : 90.00%
+vase      : 83.00%
+wardrobe  : 70.00%
+xbox      : 65.00%
+E@64	OA: 90.40	mAcc: 85.79
+
+[06/09 11:25:30] ModelNet40Ply2048 INFO: Epoch 64 LR 0.000851 train_oa 97.63, val_oa 90.40, best val oa 90.40
+[06/09 11:25:30] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:26:07] ModelNet40Ply2048 INFO: Epoch 65 LR 0.000847 train_oa 97.71, val_oa 89.14, best val oa 90.40
+[06/09 11:26:44] ModelNet40Ply2048 INFO: Epoch 66 LR 0.000842 train_oa 97.98, val_oa 89.83, best val oa 90.40
+[06/09 11:27:20] ModelNet40Ply2048 INFO: Epoch 67 LR 0.000838 train_oa 97.64, val_oa 88.25, best val oa 90.40
+[06/09 11:27:56] ModelNet40Ply2048 INFO: Epoch 68 LR 0.000833 train_oa 97.92, val_oa 89.42, best val oa 90.40
+[06/09 11:28:33] ModelNet40Ply2048 INFO: Epoch 69 LR 0.000828 train_oa 97.92, val_oa 89.83, best val oa 90.40
+[06/09 11:29:08] ModelNet40Ply2048 INFO: Epoch 70 LR 0.000824 train_oa 97.92, val_oa 90.03, best val oa 90.40
+[06/09 11:29:44] ModelNet40Ply2048 INFO: Epoch 71 LR 0.000819 train_oa 97.99, val_oa 89.51, best val oa 90.40
+[06/09 11:30:19] ModelNet40Ply2048 INFO: Epoch 72 LR 0.000814 train_oa 98.05, val_oa 89.22, best val oa 90.40
+[06/09 11:30:55] ModelNet40Ply2048 INFO: Epoch 73 LR 0.000809 train_oa 98.09, val_oa 89.14, best val oa 90.40
+[06/09 11:31:32] ModelNet40Ply2048 INFO: Epoch 74 LR 0.000804 train_oa 98.22, val_oa 89.63, best val oa 90.40
+[06/09 11:32:08] ModelNet40Ply2048 INFO: Epoch 75 LR 0.000799 train_oa 98.13, val_oa 90.40, best val oa 90.40
+[06/09 11:32:45] ModelNet40Ply2048 INFO: Epoch 76 LR 0.000794 train_oa 98.30, val_oa 89.47, best val oa 90.40
+[06/09 11:33:21] ModelNet40Ply2048 INFO: Epoch 77 LR 0.000789 train_oa 98.22, val_oa 89.79, best val oa 90.40
+[06/09 11:33:59] ModelNet40Ply2048 INFO: Epoch 78 LR 0.000784 train_oa 98.29, val_oa 90.32, best val oa 90.40
+[06/09 11:34:36] ModelNet40Ply2048 INFO: Epoch 79 LR 0.000779 train_oa 98.38, val_oa 89.30, best val oa 90.40
+[06/09 11:35:12] ModelNet40Ply2048 INFO: Find a better ckpt @E80
+[06/09 11:35:12] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 90.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 97.00%
+bottle    : 98.00%
+bowl      : 90.00%
+car       : 97.00%
+chair     : 99.00%
+cone      : 100.00%
+cup       : 70.00%
+curtain   : 75.00%
+desk      : 94.19%
+door      : 90.00%
+dresser   : 89.53%
+flower_pot: 25.00%
+glass_box : 95.00%
+guitar    : 100.00%
+keyboard  : 95.00%
+lamp      : 95.00%
+laptop    : 100.00%
+mantel    : 95.00%
+monitor   : 100.00%
+night_stand: 68.60%
+person    : 90.00%
+piano     : 91.00%
+plant     : 78.00%
+radio     : 60.00%
+range_hood: 96.00%
+sink      : 85.00%
+sofa      : 99.00%
+stairs    : 95.00%
+stool     : 70.00%
+table     : 74.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 84.00%
+vase      : 83.00%
+wardrobe  : 70.00%
+xbox      : 55.00%
+E@80	OA: 90.48	mAcc: 86.53
+
+[06/09 11:35:12] ModelNet40Ply2048 INFO: Epoch 80 LR 0.000773 train_oa 98.32, val_oa 90.48, best val oa 90.48
+[06/09 11:35:12] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:35:49] ModelNet40Ply2048 INFO: Epoch 81 LR 0.000768 train_oa 98.48, val_oa 90.40, best val oa 90.48
+[06/09 11:36:25] ModelNet40Ply2048 INFO: Epoch 82 LR 0.000763 train_oa 98.32, val_oa 90.28, best val oa 90.48
+[06/09 11:37:02] ModelNet40Ply2048 INFO: Epoch 83 LR 0.000757 train_oa 98.25, val_oa 89.51, best val oa 90.48
+[06/09 11:37:39] ModelNet40Ply2048 INFO: Epoch 84 LR 0.000752 train_oa 98.61, val_oa 90.44, best val oa 90.48
+[06/09 11:38:15] ModelNet40Ply2048 INFO: Find a better ckpt @E85
+[06/09 11:38:15] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 94.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 95.00%
+bottle    : 94.00%
+bowl      : 95.00%
+car       : 97.00%
+chair     : 98.00%
+cone      : 90.00%
+cup       : 65.00%
+curtain   : 100.00%
+desk      : 84.88%
+door      : 90.00%
+dresser   : 88.37%
+flower_pot: 0.00%
+glass_box : 95.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 80.00%
+laptop    : 100.00%
+mantel    : 97.00%
+monitor   : 97.00%
+night_stand: 76.74%
+person    : 85.00%
+piano     : 89.00%
+plant     : 85.00%
+radio     : 75.00%
+range_hood: 94.00%
+sink      : 75.00%
+sofa      : 98.00%
+stairs    : 80.00%
+stool     : 85.00%
+table     : 95.00%
+tent      : 95.00%
+toilet    : 100.00%
+tv_stand  : 81.00%
+vase      : 84.00%
+wardrobe  : 75.00%
+xbox      : 60.00%
+E@85	OA: 90.96	mAcc: 86.68
+
+[06/09 11:38:15] ModelNet40Ply2048 INFO: Epoch 85 LR 0.000747 train_oa 98.31, val_oa 90.96, best val oa 90.96
+[06/09 11:38:15] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:38:51] ModelNet40Ply2048 INFO: Epoch 86 LR 0.000741 train_oa 98.61, val_oa 90.36, best val oa 90.96
+[06/09 11:39:26] ModelNet40Ply2048 INFO: Epoch 87 LR 0.000736 train_oa 98.56, val_oa 89.47, best val oa 90.96
+[06/09 11:40:02] ModelNet40Ply2048 INFO: Epoch 88 LR 0.000730 train_oa 98.64, val_oa 90.11, best val oa 90.96
+[06/09 11:40:38] ModelNet40Ply2048 INFO: Epoch 89 LR 0.000724 train_oa 98.67, val_oa 89.34, best val oa 90.96
+[06/09 11:41:14] ModelNet40Ply2048 INFO: Epoch 90 LR 0.000719 train_oa 98.65, val_oa 90.40, best val oa 90.96
+[06/09 11:41:51] ModelNet40Ply2048 INFO: Epoch 91 LR 0.000713 train_oa 98.53, val_oa 90.64, best val oa 90.96
+[06/09 11:42:27] ModelNet40Ply2048 INFO: Epoch 92 LR 0.000707 train_oa 98.82, val_oa 89.91, best val oa 90.96
+[06/09 11:43:04] ModelNet40Ply2048 INFO: Epoch 93 LR 0.000702 train_oa 98.76, val_oa 89.95, best val oa 90.96
+[06/09 11:43:40] ModelNet40Ply2048 INFO: Epoch 94 LR 0.000696 train_oa 98.70, val_oa 90.19, best val oa 90.96
+[06/09 11:44:17] ModelNet40Ply2048 INFO: Find a better ckpt @E95
+[06/09 11:44:17] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 80.00%
+bookshelf : 94.00%
+bottle    : 98.00%
+bowl      : 95.00%
+car       : 97.00%
+chair     : 97.00%
+cone      : 90.00%
+cup       : 65.00%
+curtain   : 85.00%
+desk      : 87.21%
+door      : 65.00%
+dresser   : 86.05%
+flower_pot: 0.00%
+glass_box : 95.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 90.00%
+laptop    : 100.00%
+mantel    : 97.00%
+monitor   : 99.00%
+night_stand: 77.91%
+person    : 95.00%
+piano     : 89.00%
+plant     : 85.00%
+radio     : 75.00%
+range_hood: 91.00%
+sink      : 90.00%
+sofa      : 98.00%
+stairs    : 90.00%
+stool     : 85.00%
+table     : 92.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 87.00%
+vase      : 83.00%
+wardrobe  : 75.00%
+xbox      : 65.00%
+E@95	OA: 91.17	mAcc: 87.08
+
+[06/09 11:44:17] ModelNet40Ply2048 INFO: Epoch 95 LR 0.000690 train_oa 98.98, val_oa 91.17, best val oa 91.17
+[06/09 11:44:17] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 11:44:54] ModelNet40Ply2048 INFO: Epoch 96 LR 0.000684 train_oa 98.83, val_oa 90.52, best val oa 91.17
+[06/09 11:45:30] ModelNet40Ply2048 INFO: Epoch 97 LR 0.000679 train_oa 98.77, val_oa 89.79, best val oa 91.17
+[06/09 11:46:07] ModelNet40Ply2048 INFO: Epoch 98 LR 0.000673 train_oa 99.05, val_oa 91.13, best val oa 91.17
+[06/09 11:46:42] ModelNet40Ply2048 INFO: Epoch 99 LR 0.000667 train_oa 98.90, val_oa 90.48, best val oa 91.17
+[06/09 11:47:18] ModelNet40Ply2048 INFO: Epoch 100 LR 0.000661 train_oa 98.95, val_oa 90.64, best val oa 91.17
+[06/09 11:47:54] ModelNet40Ply2048 INFO: Epoch 101 LR 0.000655 train_oa 99.07, val_oa 89.87, best val oa 91.17
+[06/09 11:48:29] ModelNet40Ply2048 INFO: Epoch 102 LR 0.000649 train_oa 98.98, val_oa 91.09, best val oa 91.17
+[06/09 11:49:05] ModelNet40Ply2048 INFO: Epoch 103 LR 0.000643 train_oa 99.03, val_oa 89.47, best val oa 91.17
+[06/09 11:49:40] ModelNet40Ply2048 INFO: Epoch 104 LR 0.000637 train_oa 98.88, val_oa 89.63, best val oa 91.17
+[06/09 11:50:16] ModelNet40Ply2048 INFO: Epoch 105 LR 0.000631 train_oa 98.80, val_oa 90.03, best val oa 91.17
+[06/09 11:50:51] ModelNet40Ply2048 INFO: Epoch 106 LR 0.000625 train_oa 98.93, val_oa 89.47, best val oa 91.17
+[06/09 11:51:26] ModelNet40Ply2048 INFO: Epoch 107 LR 0.000619 train_oa 98.90, val_oa 90.60, best val oa 91.17
+[06/09 11:52:03] ModelNet40Ply2048 INFO: Epoch 108 LR 0.000613 train_oa 99.07, val_oa 90.96, best val oa 91.17
+[06/09 11:52:37] ModelNet40Ply2048 INFO: Epoch 109 LR 0.000606 train_oa 99.18, val_oa 89.99, best val oa 91.17
+[06/09 11:53:14] ModelNet40Ply2048 INFO: Epoch 110 LR 0.000600 train_oa 99.20, val_oa 89.30, best val oa 91.17
+[06/09 11:53:48] ModelNet40Ply2048 INFO: Epoch 111 LR 0.000594 train_oa 99.13, val_oa 90.36, best val oa 91.17
+[06/09 11:54:24] ModelNet40Ply2048 INFO: Epoch 112 LR 0.000588 train_oa 99.18, val_oa 90.72, best val oa 91.17
+[06/09 11:55:00] ModelNet40Ply2048 INFO: Epoch 113 LR 0.000582 train_oa 99.13, val_oa 90.24, best val oa 91.17
+[06/09 11:55:35] ModelNet40Ply2048 INFO: Epoch 114 LR 0.000576 train_oa 99.03, val_oa 89.83, best val oa 91.17
+[06/09 11:56:11] ModelNet40Ply2048 INFO: Epoch 115 LR 0.000569 train_oa 99.30, val_oa 89.79, best val oa 91.17
+[06/09 11:56:46] ModelNet40Ply2048 INFO: Epoch 116 LR 0.000563 train_oa 99.30, val_oa 90.32, best val oa 91.17
+[06/09 11:57:22] ModelNet40Ply2048 INFO: Epoch 117 LR 0.000557 train_oa 99.36, val_oa 90.72, best val oa 91.17
+[06/09 11:57:58] ModelNet40Ply2048 INFO: Epoch 118 LR 0.000551 train_oa 99.37, val_oa 91.09, best val oa 91.17
+[06/09 11:58:33] ModelNet40Ply2048 INFO: Epoch 119 LR 0.000544 train_oa 99.13, val_oa 89.83, best val oa 91.17
+[06/09 11:59:09] ModelNet40Ply2048 INFO: Epoch 120 LR 0.000538 train_oa 99.36, val_oa 91.17, best val oa 91.17
+[06/09 11:59:44] ModelNet40Ply2048 INFO: Epoch 121 LR 0.000532 train_oa 99.36, val_oa 90.24, best val oa 91.17
+[06/09 12:00:19] ModelNet40Ply2048 INFO: Epoch 122 LR 0.000526 train_oa 99.32, val_oa 90.56, best val oa 91.17
+[06/09 12:00:55] ModelNet40Ply2048 INFO: Epoch 123 LR 0.000519 train_oa 99.45, val_oa 90.36, best val oa 91.17
+[06/09 12:01:30] ModelNet40Ply2048 INFO: Epoch 124 LR 0.000513 train_oa 99.48, val_oa 90.64, best val oa 91.17
+[06/09 12:02:06] ModelNet40Ply2048 INFO: Epoch 125 LR 0.000507 train_oa 99.51, val_oa 90.28, best val oa 91.17
+[06/09 12:02:41] ModelNet40Ply2048 INFO: Epoch 126 LR 0.000501 train_oa 99.38, val_oa 89.26, best val oa 91.17
+[06/09 12:03:17] ModelNet40Ply2048 INFO: Epoch 127 LR 0.000494 train_oa 99.47, val_oa 90.56, best val oa 91.17
+[06/09 12:03:53] ModelNet40Ply2048 INFO: Epoch 128 LR 0.000488 train_oa 99.47, val_oa 91.00, best val oa 91.17
+[06/09 12:04:28] ModelNet40Ply2048 INFO: Epoch 129 LR 0.000482 train_oa 99.32, val_oa 90.11, best val oa 91.17
+[06/09 12:05:04] ModelNet40Ply2048 INFO: Epoch 130 LR 0.000475 train_oa 99.47, val_oa 90.03, best val oa 91.17
+[06/09 12:05:39] ModelNet40Ply2048 INFO: Epoch 131 LR 0.000469 train_oa 99.55, val_oa 90.36, best val oa 91.17
+[06/09 12:06:15] ModelNet40Ply2048 INFO: Epoch 132 LR 0.000463 train_oa 99.59, val_oa 90.56, best val oa 91.17
+[06/09 12:06:50] ModelNet40Ply2048 INFO: Epoch 133 LR 0.000457 train_oa 99.54, val_oa 90.84, best val oa 91.17
+[06/09 12:07:25] ModelNet40Ply2048 INFO: Epoch 134 LR 0.000450 train_oa 99.45, val_oa 90.76, best val oa 91.17
+[06/09 12:08:02] ModelNet40Ply2048 INFO: Epoch 135 LR 0.000444 train_oa 99.58, val_oa 90.52, best val oa 91.17
+[06/09 12:08:37] ModelNet40Ply2048 INFO: Epoch 136 LR 0.000438 train_oa 99.59, val_oa 90.44, best val oa 91.17
+[06/09 12:09:13] ModelNet40Ply2048 INFO: Epoch 137 LR 0.000432 train_oa 99.55, val_oa 90.48, best val oa 91.17
+[06/09 12:09:47] ModelNet40Ply2048 INFO: Epoch 138 LR 0.000425 train_oa 99.59, val_oa 90.56, best val oa 91.17
+[06/09 12:10:21] ModelNet40Ply2048 INFO: Epoch 139 LR 0.000419 train_oa 99.61, val_oa 90.11, best val oa 91.17
+[06/09 12:10:56] ModelNet40Ply2048 INFO: Epoch 140 LR 0.000413 train_oa 99.65, val_oa 90.36, best val oa 91.17
+[06/09 12:11:29] ModelNet40Ply2048 INFO: Epoch 141 LR 0.000407 train_oa 99.62, val_oa 90.84, best val oa 91.17
+[06/09 12:12:04] ModelNet40Ply2048 INFO: Epoch 142 LR 0.000401 train_oa 99.65, val_oa 90.64, best val oa 91.17
+[06/09 12:12:38] ModelNet40Ply2048 INFO: Epoch 143 LR 0.000395 train_oa 99.62, val_oa 90.52, best val oa 91.17
+[06/09 12:13:11] ModelNet40Ply2048 INFO: Epoch 144 LR 0.000388 train_oa 99.68, val_oa 89.95, best val oa 91.17
+[06/09 12:13:47] ModelNet40Ply2048 INFO: Epoch 145 LR 0.000382 train_oa 99.64, val_oa 90.07, best val oa 91.17
+[06/09 12:14:20] ModelNet40Ply2048 INFO: Epoch 146 LR 0.000376 train_oa 99.65, val_oa 90.72, best val oa 91.17
+[06/09 12:14:55] ModelNet40Ply2048 INFO: Epoch 147 LR 0.000370 train_oa 99.68, val_oa 89.79, best val oa 91.17
+[06/09 12:15:29] ModelNet40Ply2048 INFO: Epoch 148 LR 0.000364 train_oa 99.77, val_oa 90.56, best val oa 91.17
+[06/09 12:16:03] ModelNet40Ply2048 INFO: Epoch 149 LR 0.000358 train_oa 99.61, val_oa 89.87, best val oa 91.17
+[06/09 12:16:38] ModelNet40Ply2048 INFO: Epoch 150 LR 0.000352 train_oa 99.68, val_oa 89.67, best val oa 91.17
+[06/09 12:17:12] ModelNet40Ply2048 INFO: Epoch 151 LR 0.000346 train_oa 99.74, val_oa 90.72, best val oa 91.17
+[06/09 12:17:48] ModelNet40Ply2048 INFO: Epoch 152 LR 0.000340 train_oa 99.80, val_oa 91.17, best val oa 91.17
+[06/09 12:18:21] ModelNet40Ply2048 INFO: Epoch 153 LR 0.000334 train_oa 99.74, val_oa 90.64, best val oa 91.17
+[06/09 12:18:56] ModelNet40Ply2048 INFO: Epoch 154 LR 0.000328 train_oa 99.70, val_oa 90.56, best val oa 91.17
+[06/09 12:19:30] ModelNet40Ply2048 INFO: Epoch 155 LR 0.000322 train_oa 99.88, val_oa 90.84, best val oa 91.17
+[06/09 12:20:04] ModelNet40Ply2048 INFO: Epoch 156 LR 0.000317 train_oa 99.85, val_oa 90.48, best val oa 91.17
+[06/09 12:20:39] ModelNet40Ply2048 INFO: Epoch 157 LR 0.000311 train_oa 99.83, val_oa 90.19, best val oa 91.17
+[06/09 12:21:12] ModelNet40Ply2048 INFO: Epoch 158 LR 0.000305 train_oa 99.78, val_oa 90.56, best val oa 91.17
+[06/09 12:21:47] ModelNet40Ply2048 INFO: Epoch 159 LR 0.000299 train_oa 99.87, val_oa 90.76, best val oa 91.17
+[06/09 12:22:21] ModelNet40Ply2048 INFO: Epoch 160 LR 0.000294 train_oa 99.83, val_oa 90.64, best val oa 91.17
+[06/09 12:22:54] ModelNet40Ply2048 INFO: Epoch 161 LR 0.000288 train_oa 99.87, val_oa 91.05, best val oa 91.17
+[06/09 12:23:29] ModelNet40Ply2048 INFO: Epoch 162 LR 0.000282 train_oa 99.83, val_oa 90.56, best val oa 91.17
+[06/09 12:24:03] ModelNet40Ply2048 INFO: Find a better ckpt @E163
+[06/09 12:24:03] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 94.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 93.00%
+bottle    : 98.00%
+bowl      : 90.00%
+car       : 98.00%
+chair     : 97.00%
+cone      : 95.00%
+cup       : 70.00%
+curtain   : 95.00%
+desk      : 89.53%
+door      : 90.00%
+dresser   : 86.05%
+flower_pot: 15.00%
+glass_box : 98.00%
+guitar    : 100.00%
+keyboard  : 95.00%
+lamp      : 85.00%
+laptop    : 100.00%
+mantel    : 96.00%
+monitor   : 99.00%
+night_stand: 79.07%
+person    : 90.00%
+piano     : 89.00%
+plant     : 82.00%
+radio     : 70.00%
+range_hood: 93.00%
+sink      : 75.00%
+sofa      : 98.00%
+stairs    : 95.00%
+stool     : 95.00%
+table     : 79.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 91.00%
+vase      : 83.00%
+wardrobe  : 80.00%
+xbox      : 75.00%
+E@163	OA: 91.37	mAcc: 88.14
+
+[06/09 12:24:03] ModelNet40Ply2048 INFO: Epoch 163 LR 0.000277 train_oa 99.85, val_oa 91.37, best val oa 91.37
+[06/09 12:24:03] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 12:24:38] ModelNet40Ply2048 INFO: Epoch 164 LR 0.000271 train_oa 99.79, val_oa 90.07, best val oa 91.37
+[06/09 12:25:11] ModelNet40Ply2048 INFO: Epoch 165 LR 0.000265 train_oa 99.83, val_oa 91.13, best val oa 91.37
+[06/09 12:25:45] ModelNet40Ply2048 INFO: Find a better ckpt @E166
+[06/09 12:25:45] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 96.00%
+bottle    : 98.00%
+bowl      : 90.00%
+car       : 98.00%
+chair     : 97.00%
+cone      : 90.00%
+cup       : 70.00%
+curtain   : 95.00%
+desk      : 88.37%
+door      : 85.00%
+dresser   : 87.21%
+flower_pot: 15.00%
+glass_box : 97.00%
+guitar    : 100.00%
+keyboard  : 100.00%
+lamp      : 85.00%
+laptop    : 100.00%
+mantel    : 94.00%
+monitor   : 98.00%
+night_stand: 82.56%
+person    : 95.00%
+piano     : 90.00%
+plant     : 79.00%
+radio     : 75.00%
+range_hood: 95.00%
+sink      : 80.00%
+sofa      : 98.00%
+stairs    : 95.00%
+stool     : 90.00%
+table     : 82.00%
+tent      : 95.00%
+toilet    : 100.00%
+tv_stand  : 90.00%
+vase      : 81.00%
+wardrobe  : 75.00%
+xbox      : 70.00%
+E@166	OA: 91.41	mAcc: 88.05
+
+[06/09 12:25:45] ModelNet40Ply2048 INFO: Epoch 166 LR 0.000260 train_oa 99.90, val_oa 91.41, best val oa 91.41
+[06/09 12:25:45] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 12:26:20] ModelNet40Ply2048 INFO: Epoch 167 LR 0.000254 train_oa 99.88, val_oa 90.88, best val oa 91.41
+[06/09 12:26:54] ModelNet40Ply2048 INFO: Epoch 168 LR 0.000249 train_oa 99.92, val_oa 90.36, best val oa 91.41
+[06/09 12:27:29] ModelNet40Ply2048 INFO: Epoch 169 LR 0.000244 train_oa 99.90, val_oa 91.09, best val oa 91.41
+[06/09 12:28:03] ModelNet40Ply2048 INFO: Epoch 170 LR 0.000238 train_oa 99.87, val_oa 91.17, best val oa 91.41
+[06/09 12:28:38] ModelNet40Ply2048 INFO: Epoch 171 LR 0.000233 train_oa 99.87, val_oa 90.96, best val oa 91.41
+[06/09 12:29:13] ModelNet40Ply2048 INFO: Epoch 172 LR 0.000228 train_oa 99.92, val_oa 90.56, best val oa 91.41
+[06/09 12:29:47] ModelNet40Ply2048 INFO: Epoch 173 LR 0.000222 train_oa 99.93, val_oa 90.72, best val oa 91.41
+[06/09 12:30:22] ModelNet40Ply2048 INFO: Epoch 174 LR 0.000217 train_oa 99.89, val_oa 90.96, best val oa 91.41
+[06/09 12:30:56] ModelNet40Ply2048 INFO: Epoch 175 LR 0.000212 train_oa 99.90, val_oa 90.96, best val oa 91.41
+[06/09 12:31:30] ModelNet40Ply2048 INFO: Epoch 176 LR 0.000207 train_oa 99.93, val_oa 91.25, best val oa 91.41
+[06/09 12:32:05] ModelNet40Ply2048 INFO: Epoch 177 LR 0.000202 train_oa 99.93, val_oa 91.05, best val oa 91.41
+[06/09 12:32:38] ModelNet40Ply2048 INFO: Epoch 178 LR 0.000197 train_oa 99.92, val_oa 91.21, best val oa 91.41
+[06/09 12:33:14] ModelNet40Ply2048 INFO: Epoch 179 LR 0.000192 train_oa 99.97, val_oa 91.05, best val oa 91.41
+[06/09 12:33:47] ModelNet40Ply2048 INFO: Epoch 180 LR 0.000187 train_oa 99.97, val_oa 91.21, best val oa 91.41
+[06/09 12:34:22] ModelNet40Ply2048 INFO: Epoch 181 LR 0.000182 train_oa 99.98, val_oa 90.96, best val oa 91.41
+[06/09 12:34:57] ModelNet40Ply2048 INFO: Epoch 182 LR 0.000177 train_oa 99.95, val_oa 90.44, best val oa 91.41
+[06/09 12:35:30] ModelNet40Ply2048 INFO: Epoch 183 LR 0.000173 train_oa 99.98, val_oa 91.13, best val oa 91.41
+[06/09 12:36:05] ModelNet40Ply2048 INFO: Epoch 184 LR 0.000168 train_oa 99.96, val_oa 91.05, best val oa 91.41
+[06/09 12:36:39] ModelNet40Ply2048 INFO: Epoch 185 LR 0.000163 train_oa 99.96, val_oa 91.13, best val oa 91.41
+[06/09 12:37:14] ModelNet40Ply2048 INFO: Epoch 186 LR 0.000159 train_oa 99.95, val_oa 90.84, best val oa 91.41
+[06/09 12:37:48] ModelNet40Ply2048 INFO: Epoch 187 LR 0.000154 train_oa 99.97, val_oa 90.96, best val oa 91.41
+[06/09 12:38:21] ModelNet40Ply2048 INFO: Epoch 188 LR 0.000150 train_oa 99.98, val_oa 90.88, best val oa 91.41
+[06/09 12:38:57] ModelNet40Ply2048 INFO: Epoch 189 LR 0.000145 train_oa 99.98, val_oa 91.05, best val oa 91.41
+[06/09 12:39:30] ModelNet40Ply2048 INFO: Epoch 190 LR 0.000141 train_oa 100.00, val_oa 91.37, best val oa 91.41
+[06/09 12:40:05] ModelNet40Ply2048 INFO: Epoch 191 LR 0.000136 train_oa 99.98, val_oa 91.33, best val oa 91.41
+[06/09 12:40:39] ModelNet40Ply2048 INFO: Epoch 192 LR 0.000132 train_oa 99.98, val_oa 91.29, best val oa 91.41
+[06/09 12:41:13] ModelNet40Ply2048 INFO: Epoch 193 LR 0.000128 train_oa 99.97, val_oa 90.96, best val oa 91.41
+[06/09 12:41:48] ModelNet40Ply2048 INFO: Epoch 194 LR 0.000124 train_oa 99.97, val_oa 91.21, best val oa 91.41
+[06/09 12:42:21] ModelNet40Ply2048 INFO: Epoch 195 LR 0.000120 train_oa 99.97, val_oa 91.00, best val oa 91.41
+[06/09 12:42:57] ModelNet40Ply2048 INFO: Epoch 196 LR 0.000116 train_oa 99.99, val_oa 90.96, best val oa 91.41
+[06/09 12:43:30] ModelNet40Ply2048 INFO: Find a better ckpt @E197
+[06/09 12:43:30] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 96.00%
+bottle    : 98.00%
+bowl      : 95.00%
+car       : 98.00%
+chair     : 97.00%
+cone      : 95.00%
+cup       : 65.00%
+curtain   : 90.00%
+desk      : 90.70%
+door      : 90.00%
+dresser   : 86.05%
+flower_pot: 15.00%
+glass_box : 97.00%
+guitar    : 100.00%
+keyboard  : 95.00%
+lamp      : 95.00%
+laptop    : 100.00%
+mantel    : 97.00%
+monitor   : 99.00%
+night_stand: 80.23%
+person    : 90.00%
+piano     : 90.00%
+plant     : 86.00%
+radio     : 70.00%
+range_hood: 95.00%
+sink      : 85.00%
+sofa      : 98.00%
+stairs    : 95.00%
+stool     : 95.00%
+table     : 78.00%
+tent      : 95.00%
+toilet    : 100.00%
+tv_stand  : 87.00%
+vase      : 82.00%
+wardrobe  : 80.00%
+xbox      : 75.00%
+E@197	OA: 91.73	mAcc: 88.65
+
+[06/09 12:43:30] ModelNet40Ply2048 INFO: Epoch 197 LR 0.000112 train_oa 99.99, val_oa 91.73, best val oa 91.73
+[06/09 12:43:30] ModelNet40Ply2048 INFO: Found the best model and saved in log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 12:44:05] ModelNet40Ply2048 INFO: Epoch 198 LR 0.000108 train_oa 99.98, val_oa 91.65, best val oa 91.73
+[06/09 12:44:40] ModelNet40Ply2048 INFO: Epoch 199 LR 0.000104 train_oa 99.97, val_oa 91.17, best val oa 91.73
+[06/09 12:45:14] ModelNet40Ply2048 INFO: Epoch 200 LR 0.000100 train_oa 99.98, val_oa 90.64, best val oa 91.73
+[06/09 12:45:49] ModelNet40Ply2048 INFO: Epoch 201 LR 0.000096 train_oa 100.00, val_oa 90.96, best val oa 91.73
+[06/09 12:46:23] ModelNet40Ply2048 INFO: Epoch 202 LR 0.000093 train_oa 99.99, val_oa 90.96, best val oa 91.73
+[06/09 12:46:57] ModelNet40Ply2048 INFO: Epoch 203 LR 0.000089 train_oa 99.95, val_oa 91.00, best val oa 91.73
+[06/09 12:47:32] ModelNet40Ply2048 INFO: Epoch 204 LR 0.000086 train_oa 99.99, val_oa 91.00, best val oa 91.73
+[06/09 12:48:05] ModelNet40Ply2048 INFO: Epoch 205 LR 0.000082 train_oa 99.98, val_oa 90.76, best val oa 91.73
+[06/09 12:48:40] ModelNet40Ply2048 INFO: Epoch 206 LR 0.000079 train_oa 100.00, val_oa 90.52, best val oa 91.73
+[06/09 12:49:13] ModelNet40Ply2048 INFO: Epoch 207 LR 0.000075 train_oa 100.00, val_oa 90.96, best val oa 91.73
+[06/09 12:49:48] ModelNet40Ply2048 INFO: Epoch 208 LR 0.000072 train_oa 100.00, val_oa 90.92, best val oa 91.73
+[06/09 12:50:22] ModelNet40Ply2048 INFO: Epoch 209 LR 0.000069 train_oa 99.99, val_oa 90.92, best val oa 91.73
+[06/09 12:50:55] ModelNet40Ply2048 INFO: Epoch 210 LR 0.000066 train_oa 100.00, val_oa 90.96, best val oa 91.73
+[06/09 12:51:31] ModelNet40Ply2048 INFO: Epoch 211 LR 0.000063 train_oa 99.99, val_oa 90.64, best val oa 91.73
+[06/09 12:52:04] ModelNet40Ply2048 INFO: Epoch 212 LR 0.000060 train_oa 100.00, val_oa 90.88, best val oa 91.73
+[06/09 12:52:39] ModelNet40Ply2048 INFO: Epoch 213 LR 0.000057 train_oa 99.98, val_oa 91.61, best val oa 91.73
+[06/09 12:53:13] ModelNet40Ply2048 INFO: Epoch 214 LR 0.000054 train_oa 99.98, val_oa 91.25, best val oa 91.73
+[06/09 12:53:47] ModelNet40Ply2048 INFO: Epoch 215 LR 0.000051 train_oa 100.00, val_oa 91.21, best val oa 91.73
+[06/09 12:54:23] ModelNet40Ply2048 INFO: Epoch 216 LR 0.000049 train_oa 100.00, val_oa 91.21, best val oa 91.73
+[06/09 12:54:57] ModelNet40Ply2048 INFO: Epoch 217 LR 0.000046 train_oa 100.00, val_oa 91.33, best val oa 91.73
+[06/09 12:55:32] ModelNet40Ply2048 INFO: Epoch 218 LR 0.000043 train_oa 100.00, val_oa 91.49, best val oa 91.73
+[06/09 12:56:05] ModelNet40Ply2048 INFO: Epoch 219 LR 0.000041 train_oa 100.00, val_oa 91.45, best val oa 91.73
+[06/09 12:56:39] ModelNet40Ply2048 INFO: Epoch 220 LR 0.000038 train_oa 99.99, val_oa 91.09, best val oa 91.73
+[06/09 12:57:14] ModelNet40Ply2048 INFO: Epoch 221 LR 0.000036 train_oa 100.00, val_oa 90.92, best val oa 91.73
+[06/09 12:57:48] ModelNet40Ply2048 INFO: Epoch 222 LR 0.000034 train_oa 100.00, val_oa 91.05, best val oa 91.73
+[06/09 12:58:23] ModelNet40Ply2048 INFO: Epoch 223 LR 0.000032 train_oa 100.00, val_oa 91.25, best val oa 91.73
+[06/09 12:58:57] ModelNet40Ply2048 INFO: Epoch 224 LR 0.000029 train_oa 100.00, val_oa 91.09, best val oa 91.73
+[06/09 12:59:31] ModelNet40Ply2048 INFO: Epoch 225 LR 0.000027 train_oa 100.00, val_oa 91.33, best val oa 91.73
+[06/09 13:00:06] ModelNet40Ply2048 INFO: Epoch 226 LR 0.000025 train_oa 100.00, val_oa 91.13, best val oa 91.73
+[06/09 13:00:39] ModelNet40Ply2048 INFO: Epoch 227 LR 0.000024 train_oa 100.00, val_oa 91.05, best val oa 91.73
+[06/09 13:01:15] ModelNet40Ply2048 INFO: Epoch 228 LR 0.000022 train_oa 99.99, val_oa 91.09, best val oa 91.73
+[06/09 13:01:48] ModelNet40Ply2048 INFO: Epoch 229 LR 0.000020 train_oa 100.00, val_oa 91.00, best val oa 91.73
+[06/09 13:02:23] ModelNet40Ply2048 INFO: Epoch 230 LR 0.000018 train_oa 100.00, val_oa 91.25, best val oa 91.73
+[06/09 13:02:57] ModelNet40Ply2048 INFO: Epoch 231 LR 0.000017 train_oa 100.00, val_oa 91.00, best val oa 91.73
+[06/09 13:03:31] ModelNet40Ply2048 INFO: Epoch 232 LR 0.000015 train_oa 100.00, val_oa 91.09, best val oa 91.73
+[06/09 13:04:06] ModelNet40Ply2048 INFO: Epoch 233 LR 0.000014 train_oa 100.00, val_oa 91.13, best val oa 91.73
+[06/09 13:04:40] ModelNet40Ply2048 INFO: Epoch 234 LR 0.000012 train_oa 100.00, val_oa 91.09, best val oa 91.73
+[06/09 13:05:15] ModelNet40Ply2048 INFO: Epoch 235 LR 0.000011 train_oa 100.00, val_oa 91.05, best val oa 91.73
+[06/09 13:05:49] ModelNet40Ply2048 INFO: Epoch 236 LR 0.000010 train_oa 100.00, val_oa 91.00, best val oa 91.73
+[06/09 13:06:22] ModelNet40Ply2048 INFO: Epoch 237 LR 0.000009 train_oa 99.99, val_oa 91.09, best val oa 91.73
+[06/09 13:06:57] ModelNet40Ply2048 INFO: Epoch 238 LR 0.000008 train_oa 100.00, val_oa 90.80, best val oa 91.73
+[06/09 13:07:31] ModelNet40Ply2048 INFO: Epoch 239 LR 0.000007 train_oa 100.00, val_oa 90.80, best val oa 91.73
+[06/09 13:08:06] ModelNet40Ply2048 INFO: Epoch 240 LR 0.000006 train_oa 100.00, val_oa 91.21, best val oa 91.73
+[06/09 13:08:40] ModelNet40Ply2048 INFO: Epoch 241 LR 0.000005 train_oa 100.00, val_oa 90.96, best val oa 91.73
+[06/09 13:09:13] ModelNet40Ply2048 INFO: Epoch 242 LR 0.000004 train_oa 100.00, val_oa 90.88, best val oa 91.73
+[06/09 13:09:48] ModelNet40Ply2048 INFO: Epoch 243 LR 0.000004 train_oa 100.00, val_oa 91.00, best val oa 91.73
+[06/09 13:10:22] ModelNet40Ply2048 INFO: Epoch 244 LR 0.000003 train_oa 99.99, val_oa 90.88, best val oa 91.73
+[06/09 13:10:57] ModelNet40Ply2048 INFO: Epoch 245 LR 0.000002 train_oa 100.00, val_oa 91.13, best val oa 91.73
+[06/09 13:11:31] ModelNet40Ply2048 INFO: Epoch 246 LR 0.000002 train_oa 99.99, val_oa 90.96, best val oa 91.73
+[06/09 13:12:05] ModelNet40Ply2048 INFO: Epoch 247 LR 0.000002 train_oa 100.00, val_oa 90.92, best val oa 91.73
+[06/09 13:12:41] ModelNet40Ply2048 INFO: Epoch 248 LR 0.000001 train_oa 100.00, val_oa 91.09, best val oa 91.73
+[06/09 13:13:14] ModelNet40Ply2048 INFO: Epoch 249 LR 0.000001 train_oa 100.00, val_oa 90.88, best val oa 91.73
+[06/09 13:13:50] ModelNet40Ply2048 INFO: Epoch 250 LR 0.000001 train_oa 100.00, val_oa 90.88, best val oa 91.73
+[06/09 13:13:53] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 95.00%
+bottle    : 98.00%
+bowl      : 95.00%
+car       : 98.00%
+chair     : 97.00%
+cone      : 95.00%
+cup       : 65.00%
+curtain   : 90.00%
+desk      : 88.37%
+door      : 90.00%
+dresser   : 87.21%
+flower_pot: 10.00%
+glass_box : 97.00%
+guitar    : 100.00%
+keyboard  : 95.00%
+lamp      : 85.00%
+laptop    : 100.00%
+mantel    : 95.00%
+monitor   : 98.00%
+night_stand: 80.23%
+person    : 95.00%
+piano     : 90.00%
+plant     : 80.00%
+radio     : 75.00%
+range_hood: 94.00%
+sink      : 75.00%
+sofa      : 98.00%
+stairs    : 95.00%
+stool     : 90.00%
+table     : 73.00%
+tent      : 95.00%
+toilet    : 99.00%
+tv_stand  : 90.00%
+vase      : 81.00%
+wardrobe  : 75.00%
+xbox      : 75.00%
+E@197	OA: 90.88	mAcc: 87.62
+
+[06/09 13:13:53] ModelNet40Ply2048 INFO: Successful Loading the ckpt from log/modelnet40ply2048/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+[06/09 13:13:53] ModelNet40Ply2048 INFO: ckpts @ 197 epoch( {'best_val': 91.73419189453125} )
+[06/09 13:13:56] ModelNet40Ply2048 INFO: 
+Classes	Acc
+airplane  : 100.00%
+bathtub   : 92.00%
+bed       : 99.00%
+bench     : 75.00%
+bookshelf : 96.00%
+bottle    : 98.00%
+bowl      : 95.00%
+car       : 98.00%
+chair     : 97.00%
+cone      : 95.00%
+cup       : 65.00%
+curtain   : 90.00%
+desk      : 90.70%
+door      : 90.00%
+dresser   : 86.05%
+flower_pot: 15.00%
+glass_box : 97.00%
+guitar    : 100.00%
+keyboard  : 95.00%
+lamp      : 95.00%
+laptop    : 100.00%
+mantel    : 97.00%
+monitor   : 99.00%
+night_stand: 80.23%
+person    : 90.00%
+piano     : 90.00%
+plant     : 86.00%
+radio     : 70.00%
+range_hood: 95.00%
+sink      : 85.00%
+sofa      : 98.00%
+stairs    : 95.00%
+stool     : 95.00%
+table     : 78.00%
+tent      : 95.00%
+toilet    : 100.00%
+tv_stand  : 87.00%
+vase      : 82.00%
+wardrobe  : 80.00%
+xbox      : 75.00%
+E@197	OA: 91.73	mAcc: 88.65
+

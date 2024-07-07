@@ -47,7 +47,16 @@ def load_data(data_dir, partition, url):
     download_and_extract_archive(url, data_dir)
     all_data = []
     all_label = []
-    for h5_name in glob.glob(os.path.join(data_dir, 'modelnet40_ply_hdf5_2048', 'ply_data_%s*.h5' % partition)):
+
+    data_path = []
+    if partition == 'train':
+        for i in ['2','4','1','0','3']:
+            data_path.append(os.path.join(data_dir, 'modelnet40_ply_hdf5_2048', 'ply_data_%s'% partition) + i + '.h5' )
+    else:
+        for i in ['0','1']:
+            data_path.append(os.path.join(data_dir, 'modelnet40_ply_hdf5_2048', 'ply_data_%s'% partition) + i + '.h5' )
+
+    for h5_name in data_path:
         # print(h5_name)
         with h5py.File(h5_name, 'r') as f: # ['data', 'faceId', 'label', 'normal']
             data = f['data'][:].astype('float32')

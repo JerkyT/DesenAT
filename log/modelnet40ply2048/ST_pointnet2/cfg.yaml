@@ -1,0 +1,180 @@
+!!python/object/new:openpoints.utils.config.EasyConfig
+dictitems:
+  AUG: ST
+  batch_size: 32
+  ckpt_dir: /home/liweigang/PointMetaBase/log/modelnet40ply2048/ST_pointnet2/checkpoint
+  code_dir: /home/liweigang/PointMetaBase/log/modelnet40ply2048/ST_pointnet2/code
+  criterion_args: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      NAME: SmoothCrossEntropy
+      label_smoothing: 0.2
+  dataloader: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      attact: sk
+      cutoff_frequency: 0.65
+      data_index: ./data/ModelNet40Ply2048/ST_index_pointnet2.npy
+      gen_shaply: false
+      gft: true
+      m: None
+      mask_alpha: 512
+      n_eval: 1000
+      num_workers: 6
+      shapley: false
+      shapley_gft: false
+      sk: true
+  dataset: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      common: !!python/object/new:openpoints.utils.config.EasyConfig
+        dictitems:
+          NAME: ModelNet40Ply2048
+          data_dir: ./data/ModelNet40Ply2048
+      train: !!python/object/new:openpoints.utils.config.EasyConfig
+        dictitems:
+          num_points: 1024
+          split: train
+      val: !!python/object/new:openpoints.utils.config.EasyConfig
+        dictitems:
+          num_points: 1024
+          split: test
+  datatransforms: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      kwargs: !!python/object/new:openpoints.utils.config.EasyConfig
+        dictitems:
+          shift:
+          - 0.2
+          - 0.2
+          - 0.2
+      train:
+      - PointsToTensor
+      - Graph_Domain_Skeleton_Attack
+      val:
+      - PointsToTensor
+      - Graph_Domain_Skeleton_Attack
+      vote:
+      - PointCloudScaleAndTranslate
+  deterministic: false
+  dist_backend: nccl
+  dist_url: tcp://localhost:8888
+  distributed: false
+  epoch: 0
+  epochs: 600
+  exp_name: pointnet++
+  feature_keys: pos
+  finetune: false
+  grad_norm_clip: 1
+  ignore_index: null
+  launcher: mp
+  layer_decay: 0
+  load_path: null
+  local_rank: 0
+  log_dir: /home/liweigang/PointMetaBase/log/modelnet40ply2048/ST_pointnet2
+  log_path: /home/liweigang/PointMetaBase/log/modelnet40ply2048/ST_pointnet2/ST_pointnet220240622-142829-kK9d5UuGSRRVk2XUJ7C3NB.log
+  logname: null
+  lr: 0.001
+  min_lr: null
+  mode: test
+  model: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      NAME: BaseCls
+      cls_args: !!python/object/new:openpoints.utils.config.EasyConfig
+        dictitems:
+          NAME: ClsHead
+          mlps:
+          - 512
+          - 256
+          norm_args: !!python/object/new:openpoints.utils.config.EasyConfig
+            dictitems:
+              norm: bn1d
+          num_classes: 40
+      encoder_args: !!python/object/new:openpoints.utils.config.EasyConfig
+        dictitems:
+          NAME: PointNet2Encoder
+          act_args: !!python/object/new:openpoints.utils.config.EasyConfig
+            dictitems:
+              act: relu
+          aggr_args: !!python/object/new:openpoints.utils.config.EasyConfig
+            dictitems:
+              NAME: convpool
+              anisotropic: false
+              feature_type: dp_fj
+              reduction: max
+          conv_args: !!python/object/new:openpoints.utils.config.EasyConfig
+            dictitems:
+              order: conv-norm-act
+          group_args: !!python/object/new:openpoints.utils.config.EasyConfig
+            dictitems:
+              NAME: ballquery
+              normalize_dp: false
+              use_xyz: true
+          in_channels: 3
+          layers: 3
+          mlps:
+          - - - 64
+              - 64
+              - 128
+          - - - 128
+              - 128
+              - 256
+          - - - 256
+              - 512
+              - 1024
+          norm_args: !!python/object/new:openpoints.utils.config.EasyConfig
+            dictitems:
+              norm: bn
+          num_samples:
+          - 32
+          - 64
+          - null
+          radius:
+          - 0.2
+          - 0.4
+          - null
+          sampler: fps
+          strides:
+          - 2
+          - 4
+          - 1
+          use_res: false
+          width: null
+  modeling: null
+  mp: false
+  multiprocessing_distributed: false
+  ngpus_per_node: 1
+  num_classes: 40
+  num_points: 1024
+  optimizer: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      NAME: adamw
+      weight_decay: 0.05
+  pretrained_path: /home/liweigang/PointMetaBase/log/modelnet40ply2048/ST_pointnet2/checkpoint/modelnet40ply2048-train-pointnet++-ngpus1-seed9333-20230609-105022-9biiLwRJrF3cANg5PCaRnS_ckpt_best.pth
+  print_freq: 10
+  rank: 0
+  resume: false
+  root_dir: log/modelnet40ply2048
+  run_dir: /home/liweigang/PointMetaBase/log/modelnet40ply2048/ST_pointnet2
+  run_name: ST_pointnet2
+  save_freq: -1
+  sched: cosine
+  sched_on_epoch: true
+  seed: 9333
+  start_epoch: 1
+  step_per_update: 1
+  sync_bn: false
+  task_name: modelnet40ply2048
+  test: false
+  use_amp: false
+  use_gpu: true
+  use_mask: false
+  use_voting: false
+  val_batch_size: 32
+  val_fn: validate
+  val_freq: 1
+  vis: false
+  wandb: !!python/object/new:openpoints.utils.config.EasyConfig
+    dictitems:
+      project: PointMetaBase-ModelNet40Ply2048
+      tags:
+      - test
+      use_wandb: false
+  warmup_epochs: 0
+  world_size: 1
