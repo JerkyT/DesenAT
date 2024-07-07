@@ -1,7 +1,9 @@
 # Improving Corruption Robustness: Desensitizing the Neural Network to 3D Point Cloud through Adversarial Training
 
-## Prerequisites
+## State
+This work is under submission to "Pattern Recognition".
 
+## Prerequisites
 Install necessary packages using:
 ```bash
 bash install.sh
