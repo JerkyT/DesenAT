@@ -1,7 +1,7 @@
 # Improving Corruption Robustness: Desensitizing the Neural Network to 3D Point Cloud through Adversarial Training
 
 ## State
-This work is under submission to "Pattern Recognition".
+This work is under submission to ["Pattern Recognition"](https://www.sciencedirect.com/journal/pattern-recognition).
 
 ## Prerequisites
 Install necessary packages using:
