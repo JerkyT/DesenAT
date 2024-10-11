@@ -43,19 +43,19 @@ DenAT/
 ## Script
 Train PointNet++ model using ST method:
 ```bash
-bash ./script/trainST.py
+bash ./script/trainST.sh
 ```
 Train PointNet++ model using DesenAT method:
 ```bash
-bash ./script/train.py
+bash ./script/train.sh
 ```
 Testing in ModelNet40-C 
 ```bash
-bash ./script/test_modelnetC.py
+bash ./script/test_modelnetC.sh
 ```
 Testing in PointCloud-C
 ```bash
-bash ./script/test_pointcloudC.py
+bash ./script/test_pointcloudC.sh
 ```
 ## Acknowledgment
 This repository is built on reusing codes of [OpenPoints](https://github.com/guochengqian/openpoints) and [PointNeXt](https://github.com/guochengqian/PointNeXt). We integrated [APES](https://github.com/JunweiZheng93/APES) and [PointMetaBase](https://github.com/linhaojia13/PointMetaBase) into the code. We also have integrated methods for handling corrupted point clouds into our code, thanks to the excellent work of [ModelNet-C](https://github.com/jiachens/ModelNet40-C) and [PointCloud-C](https://github.com/ldkong1205/PointCloud-C).
