@@ -28,7 +28,7 @@ DenAT/
 ## Generate or download the shapely value corresponding to modelNet
 Generate the shapely value corresponding to modelNet：
 ```bash
-bash ./script/gen_shapely.py
+bash ./script/gen_shapely.sh
 ```
 Or you can also download it directly from this [link](https://drive.google.com/drive/folders/1vzz-3QjIQ8VBdwMa32cQGAi8aLmPp1RH?usp=sharing).
 You need to put the file in the specified directory：
