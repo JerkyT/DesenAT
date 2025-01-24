@@ -461,3 +461,60 @@ class JGEKD():
 
         return loss
 ##########################################################################
+
+@LOSS.register_module()
+class DLB(nn.Module):
+    """Self-Distillation from the Last Mini-Batch for Consistency Regularization(CVPR 2022)"""
+    def __init__(self, **kwargs):
+        super(DLB, self).__init__()
+        print("-----------------------------------DLB-------------------------------------")
+        self.ce_loss_weight = 1.0
+        self.kd_loss_weight = 1.0
+        self.temperature = 3.0
+
+        self.ce = SmoothClsLoss()
+
+    def forward(self, logits_student, logits_teacher, target, epoch):
+
+        dml_loss = (
+                        F.kl_div(
+                            F.log_softmax(logits_student / self.temperature, dim=1),
+                            F.softmax(logits_teacher.detach() / self.temperature, dim=1),  # detach
+                            reduction="batchmean",
+                        )
+                        * self.temperature
+                        * self.temperature
+                    )
+
+        return self.kd_loss_weight * dml_loss
+    
+    def get_ce(self, logits, target):
+
+        return self.ce_loss_weight * F.cross_entropy(logits, target)
+
+@LOSS.register_module()
+class PSKD(nn.Module):
+    def __init__(self, **kwargs):
+        super(PSKD, self).__init__()
+
+        print("-----------------------------------PSKD-------------------------------------")
+        self.ce_loss_weight = 1.0
+        self.kd_loss_weight = 1.0
+        self.alpha_T = 3.0
+        self.end_epoch = 300
+    
+        self.logsoftmax = nn.LogSoftmax(dim=1).cuda()
+        self.all_predictions = torch.zeros(9840, 40, dtype=torch.float32)
+
+    def forward(self, logits_student, logits_teacher, target, epoch, input_indices = 0):
+        """
+        Args:
+            inputs: prediction matrix (before softmax) with shape (batch_size, num_classes)
+            targets: ground truth labels with shape (num_classes)
+        """
+
+        alpha_t = self.alpha_T * ((epoch + 1) / self.end_epoch)
+        alpha_t = max(0, alpha_t)
+
+        targets_numpy = target.cpu().detach().numpy()
+        identity_matrix = torch.eye(40) 
