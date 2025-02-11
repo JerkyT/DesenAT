@@ -38,6 +38,11 @@ class BaseCls(nn.Module):
         return self.criterion(pred, gt.long())
 
     def get_logits_loss(self, data, gt, cfg = None, epoch = None):
+
+        if cfg.criterion_args.NAME in ['PSKD']:
+            logits = self.forward(data)
+            loss = self.criterion(logits, None, gt.long(), epoch, data['index'])
+            return logits, loss
         if not 'posc' in data:
             logits = self.forward(data)
             ####
@@ -54,7 +59,6 @@ class BaseCls(nn.Module):
             
                 return logits, loss
             ####
-
             return logits, self.criterion(logits, gt.long())
         else:
             logits = self.forward(data)
@@ -65,7 +69,7 @@ class BaseCls(nn.Module):
             logits1 = self.forward(data_input)
 
             if not cfg == None:
-                if cfg.criterion_args.NAME in ['DKD']:
+                if cfg.criterion_args.NAME in ['DKD', 'DML', 'JGEKD']:
                     l_ce = self.criterion.get_ce(torch.cat([logits, logits1], 0), torch.cat([gt, gt], 0))
                     l_kd = self.criterion(logits, logits1, gt.long(), epoch)
                     return logits, l_ce + l_kd
@@ -228,7 +232,7 @@ class APESClassifier(nn.Module):
                 logits1 = self.forward(data_input)
 
             if not cfg == None:
-                if cfg.criterion_args.NAME in ['DKD']:
+                if cfg.criterion_args.NAME in ['DKD', "JGEKD"]:
                     l_ce = self.criterion.get_ce(torch.cat([logits, logits1], 0), torch.cat([gt, gt], 0))
                     l_kd = self.criterion(logits, logits1, gt.long(), epoch)
                     return logits, l_ce + l_kd
@@ -300,7 +304,7 @@ class BaseCls_ASE(nn.Module):
 
         # DKD
         if not cfg == None:
-            if cfg.criterion_args.NAME in ['DKD']:
+            if cfg.criterion_args.NAME in ['DKD', 'JGEKD']:
                 l_ce = self.criterion.get_ce(logits, gt)
                 B, _ = logits.shape
                 l_kd = self.criterion(logits[0:B // 2, :], logits[B // 2 ::, :], gt[0:B//2].long(), epoch)
