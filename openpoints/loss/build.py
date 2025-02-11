@@ -453,7 +453,7 @@ class JGEKD(torch.nn.Module):
     
     def get_ce(self, logits, target):
         pred = F.log_softmax(logits, -1)
-        loss_ce = self.criterion(pred,  target)
+        loss_ce = self.ce(pred,  target)
 
         return self.ce_loss_weight * loss_ce
 
