@@ -440,7 +440,7 @@ def seje(logits_student, logits_teacher, target, temperature = 4): # B C C; B C 
     return 1 * tckd + 8 * nckd
 
 @LOSS.register_module()
-class JGEKD():
+class JGEKD(torch.nn.Module):
     """JEGKD(by ours)"""
     def __init__(self, **kwargs):
         super(JGEKD, self).__init__()
