@@ -441,23 +441,27 @@ def seje(logits_student, logits_teacher, target, temperature = 4): # B C C; B C 
 
 @LOSS.register_module()
 class JGEKD():
-    """GKD JGEKD(by ours)"""
+    """JEGKD(by ours)"""
     def __init__(self, **kwargs):
         super(JGEKD, self).__init__()
         self.ce_loss_weight = 1.0
-        self.kd_loss_weight = 1
+        self.kd_loss_weight = 0.5
         self.temperature = 4.0
         self.warmup = 5
 
         self.ce = SmoothClsLoss()
+    
+    def get_ce(self, logits, target):
+        pred = F.log_softmax(logits, -1)
+        loss_ce = self.criterion(pred,  target)
 
-    def forward_train(self, logits_student, logits_teacher, target, epoch):
+        return self.ce_loss_weight * loss_ce
 
-        loss_ce = self.criterion(logits_student,  target)
+    def forward(self, logits_student, logits_teacher, target, epoch):
 
         loss_kd = self.kd_loss_weight * min(epoch / self.warmup, 1.0) * seje(logits_student, logits_teacher, target, self.temperature)
 
-        loss = self.ce_loss_weight * loss_ce + loss_kd
+        loss = loss_kd
 
         return loss
 ##########################################################################
