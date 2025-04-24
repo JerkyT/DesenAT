@@ -510,15 +510,28 @@ class PSKD(nn.Module):
         self.logsoftmax = nn.LogSoftmax(dim=1).cuda()
         self.all_predictions = torch.zeros(9840, 40, dtype=torch.float32)
 
-    def forward(self, logits_student, logits_teacher, target, epoch, input_indices = 0):
-        """
-        Args:
-            inputs: prediction matrix (before softmax) with shape (batch_size, num_classes)
-            targets: ground truth labels with shape (num_classes)
-        """
+    def forward(self, logits_student, logits_teacher, target, epoch, input_indices = 0):
+        """
+        Args:
+            inputs: prediction matrix (before softmax) with shape (batch_size, num_classes)
+            targets: ground truth labels with shape (num_classes)
+        """
 
-        alpha_t = self.alpha_T * ((epoch + 1) / self.end_epoch)
-        alpha_t = max(0, alpha_t)
+        alpha_t = self.alpha_T * ((epoch + 1) / self.end_epoch)
+        alpha_t = max(0, alpha_t)
 
-        targets_numpy = target.cpu().detach().numpy()
-        identity_matrix = torch.eye(40) 
+        targets_numpy = target.cpu().detach().numpy()
+        identity_matrix = torch.eye(40) 
+        targets_one_hot = identity_matrix[targets_numpy]
+
+        if epoch == 0:
+            self.all_predictions[input_indices] = targets_one_hot
+
+        soft_targets = ((1 - alpha_t) * targets_one_hot) + (alpha_t * self.all_predictions[input_indices])
+        soft_targets = soft_targets.cuda()
+
+        log_probs = self.logsoftmax(logits_student)
+        loss = (- soft_targets * log_probs).mean(0).sum()
+        loss = self.ce_loss_weight * loss
+
+        return self.kd_loss_weight * loss     
