@@ -1,7 +1,7 @@
 # Desensitizing for Improving Corruption Robustness in Point Cloud Classification through Adversarial Training
 
 ## State
-This work is under submission to ["Pattern Recognition"](https://www.sciencedirect.com/journal/pattern-recognition).
+This work is accepted for publication in ["Pattern Recognition"](https://www.sciencedirect.com/journal/pattern-recognition).
 
 ## Prerequisites
 Install necessary packages using:
