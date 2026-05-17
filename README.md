@@ -22,6 +22,7 @@ Download [ModelNet40](https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5
 DenAT/
 └── data/
     ├── ModelNet40Ply2048
+        ├──modelnet40_ply_hdf5_2048
     ├── modelnet40_c
     └── pointcloud_c
 ```
