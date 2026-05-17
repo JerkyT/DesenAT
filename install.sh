@@ -27,3 +27,6 @@ python setup.py install --user
 cd ../emd
 python setup.py install --user
 cd ../../../
+
+cd PyGem
+python setup.py install --user
