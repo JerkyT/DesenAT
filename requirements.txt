@@ -1,0 +1,38 @@
+# requirements for current env:
+# Python 3.11 + torch 2.11.0+cu130 + CUDA 13.x + NumPy 2.4.x
+# Generated from the original requirements, with already-installed packages removed.
+# Already installed and intentionally omitted: torch, torchvision, torchaudio, numpy,
+# PyYAML, setuptools, wheel, pillow, packaging, networkx, filelock, fsspec, etc.
+
+# build / utility
+ninja>=1.11.1
+Cython>=0.29.37,<3.1
+pickleshare==0.7.5
+gdown>=5.2.0
+easydict>=1.9
+termcolor>=2.4.0
+tqdm>=4.66.0
+multimethod>=1.9.1,<2
+shortuuid>=1.0.13
+
+# scientific / data / visualization
+scipy>=1.14.0
+scikit-learn>=1.5.0
+h5py>=3.11.0
+matplotlib>=3.8.0
+pandas>=2.2.0
+pyvista>=0.44.0
+
+# logging / experiment tracking
+tensorboard>=2.17.0
+wandb>=0.17.0
+protobuf>=4.25,<6
+
+# Optional: install separately only if your training config imports DeepSpeed.
+# DeepSpeed may compile CUDA extensions and can be fragile with very new CUDA/PyTorch.
+# deepspeed
+
+einops==0.6.0
+h5py==3.8.0
+mmengine==0.7.2
+pkbar==0.5
