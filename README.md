@@ -61,3 +61,17 @@ bash ./script/test_pointcloudC.sh
 ```
 ## Acknowledgment
 This repository is built on reusing codes of [OpenPoints](https://github.com/guochengqian/openpoints) and [PointNeXt](https://github.com/guochengqian/PointNeXt). We integrated [APES](https://github.com/JunweiZheng93/APES) and [PointMetaBase](https://github.com/linhaojia13/PointMetaBase) into the code. We also have integrated methods for handling corrupted point clouds into our code, thanks to the excellent work of [ModelNet-C](https://github.com/jiachens/ModelNet40-C) and [PointCloud-C](https://github.com/ldkong1205/PointCloud-C).
+
+## Citation
+If you find our work useful in your research, please consider citing:
+```
+@article{tian2026desensitizing,
+  title={Desensitizing for improving corruption robustness in point cloud classification through adversarial training},
+  author={Tian, Zhiqiang and Li, Weigang and Deng, Chunhua and Hu, Junwei and Wang, Yongqiang and Liu, Wenping},
+  journal={Pattern Recognition},
+  volume={169},
+  pages={111862},
+  year={2026},
+  publisher={Elsevier}
+}
+```
