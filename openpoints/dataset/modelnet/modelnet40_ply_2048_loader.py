@@ -164,15 +164,15 @@ class ModelNet40Ply2048(Dataset):
         self.transformc = transformc if self.partition == 'train' else None
         self.shapley = shapley
         self.cfg = cfg
-        data_index = cfg.data_index
-        self.cutoff_frequency = cfg.cutoff_frequency
-        self.gft = cfg.gft
-        self.m = cfg.m
+        # data_index = cfg.data_index
+        # self.cutoff_frequency = cfg.cutoff_frequency
+        # self.gft = cfg.gft
+        # self.m = cfg.m
 
         self.data, self.label, self.index = load_data(data_dir, self.partition, self.url)
-        if data_index:
-            idx = np.load(data_index)
-            self.data, self.label = self.data[idx], self.label[idx]  
+        # if data_index:
+        #     idx = np.load(data_index)
+        #     self.data, self.label = self.data[idx], self.label[idx]  
 
         if self.shapley:
             if self.partition == 'train':
