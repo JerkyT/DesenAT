@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 Install PyGeM
 ```bash
-cd PyGen
+cd PyGeM
 python setup.py install
 cd ..
 ```
