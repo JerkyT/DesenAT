@@ -7,6 +7,7 @@ This work is accepted for publication in ["Pattern Recognition"](https://www.sci
 Install necessary packages using:
 ```bash
 bash install.sh
+pip install -r requirements.txt
 ```
 
 Install PyGeM
